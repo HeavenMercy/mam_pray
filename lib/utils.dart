@@ -24,4 +24,12 @@ abstract class Utils {
   static bool isSameString(String str1, String str2) {
     return (str1.toLowerCase().compareTo(str2.toLowerCase()) == 0);
   }
+
+  static Widget addFixedSpace(double space) {
+    return Padding(padding: EdgeInsets.only(top: space));
+  }
+
+  static Widget addFlexibleSpace() {
+    return Expanded(child: Container());
+  }
 }

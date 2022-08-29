@@ -22,8 +22,6 @@ class _FirstTimeViewState extends State<FirstTimeView> {
 
   @override
   Widget build(BuildContext context) {
-    var model = Provider.of<AppModel>(context);
-
     return PageContainer(
       loading: loading,
       child: Padding(
@@ -34,54 +32,21 @@ class _FirstTimeViewState extends State<FirstTimeView> {
               'Mam Pray',
               style: Styles.mainText.copyWith(fontSize: Values.titleSize),
             ),
-            const Padding(padding: EdgeInsets.all(5)),
-            const Text('Bienvenue', style: Styles.subText),
-            const Padding(padding: EdgeInsets.all(65)),
+            Utils.addFixedSpace(5),
+            const Text('Welcome', style: Styles.subText),
+            Utils.addFixedSpace(65),
             CustomTextInput(
-              hintText: 'Quel est votre prénom ?',
+              hintText: "what's your firstname?",
               prefixIcon: const Icon(Icons.person),
               onChanged: (value) => fname = value,
             ),
             Expanded(child: Container()),
             Row(
               children: [
-                Expanded(child: Container()),
+                Utils.addFlexibleSpace(),
                 CustomButton(
-                  onPressed: () {
-                    if (fname.isEmpty) {
-                      Utils.showSnackBar(context,
-                          msg: 'Aucun prénom saisi',
-                          icon: Icons.person_off,
-                          action:
-                              SnackBarAction(label: 'ok', onPressed: () {}));
-                      return;
-                    }
-
-                    setState(() {
-                      loading = true;
-                    });
-
-                    model.firstname = fname;
-                    print('first name to save: ${model.firstname}');
-                    model.save().then((done) {
-                      if (done) {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const HomeView(),
-                        ));
-                        return;
-                      }
-
-                      setState(() {
-                        loading = false;
-                      });
-                      Utils.showSnackBar(context,
-                          msg: 'erreur lors de la sauvegarde',
-                          icon: Icons.error,
-                          action:
-                              SnackBarAction(label: 'ok', onPressed: () {}));
-                    });
-                  },
-                  text: 'Suivant',
+                  onPressed: () => onNextPressed(context),
+                  text: 'Next',
                 ),
               ],
             ),
@@ -89,5 +54,40 @@ class _FirstTimeViewState extends State<FirstTimeView> {
         ),
       ),
     );
+  }
+
+  void onNextPressed(BuildContext context) {
+    var model = Provider.of<AppModel>(context, listen: false);
+
+    if (fname.isEmpty) {
+      Utils.showSnackBar(context,
+          msg: 'no firstname given',
+          icon: Icons.person_off,
+          action: SnackBarAction(label: 'OK', onPressed: () {}));
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+
+    model.firstname = fname;
+    print('first name to save: ${model.firstname}');
+    model.save().then((done) {
+      if (done) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const HomeView(),
+        ));
+        return;
+      }
+
+      setState(() {
+        loading = false;
+      });
+      Utils.showSnackBar(context,
+          msg: 'an error occured while saving',
+          icon: Icons.error,
+          action: SnackBarAction(label: 'ok', onPressed: () {}));
+    });
   }
 }
