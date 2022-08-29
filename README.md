@@ -1,10 +1,10 @@
 # mam_pray
 
-A new Flutter project.
+first Flutter challenge: an app to save Biblical passages
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is from a starting point of a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
