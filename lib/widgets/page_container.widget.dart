@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../config/styles.config.dart';
-import '../config/values.config.dart';
 
 class PageContainer extends StatelessWidget {
   const PageContainer(
@@ -20,14 +19,13 @@ class PageContainer extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     var padding = setPadding
-        ? const EdgeInsets.symmetric(
-            horizontal: Values.padding, vertical: Values.padding * 1.5)
+        ? const EdgeInsets.symmetric(horizontal: 20, vertical: 30)
         : null;
 
     return Scaffold(
       backgroundColor: Styles.bgColor,
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: size.width,
           height: size.height,
           child: Stack(

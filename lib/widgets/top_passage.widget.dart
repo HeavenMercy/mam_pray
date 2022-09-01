@@ -17,13 +17,19 @@ class TopPassage extends StatelessWidget {
     return Container(
       width: size.width,
       height: size.height,
-      color: Styles.secColor,
       padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Styles.secColor,
+        borderRadius: BorderRadius.circular(3),
+      ),
       child: Column(children: [
         Container(
           width: size.width,
           height: size.height / 2.5,
-          color: Styles.bgColor,
+          decoration: BoxDecoration(
+            color: Styles.bgColor,
+            borderRadius: BorderRadius.circular(3),
+          ),
           child: Center(
             child: Text(
               passage.book.toUpperCase(),

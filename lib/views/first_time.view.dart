@@ -24,34 +24,31 @@ class _FirstTimeViewState extends State<FirstTimeView> {
   Widget build(BuildContext context) {
     return PageContainer(
       loading: loading,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Values.padding),
-        child: Column(
-          children: [
-            Text(
-              'Mam Pray',
-              style: Styles.mainText.copyWith(fontSize: Values.titleSize),
-            ),
-            Utils.addFixedSpace(5),
-            const Text('Welcome', style: Styles.subText),
-            Utils.addFixedSpace(65),
-            CustomTextInput(
-              hintText: "what's your firstname?",
-              prefixIcon: const Icon(Icons.person),
-              onChanged: (value) => fname = value,
-            ),
-            Expanded(child: Container()),
-            Row(
-              children: [
-                Utils.addFlexibleSpace(),
-                CustomButton(
-                  onPressed: () => onNextPressed(context),
-                  text: 'Next',
-                ),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          Text(
+            'Mam Pray',
+            style: Styles.mainText.copyWith(fontSize: 50),
+          ),
+          Utils.addFixedSpace(5),
+          const Text('Welcome', style: Styles.subText),
+          Utils.addFixedSpace(65),
+          CustomTextInput(
+            hintText: "what's your firstname?",
+            prefixIcon: const Icon(Icons.person),
+            onChanged: (value) => fname = value,
+          ),
+          Expanded(child: Container()),
+          Row(
+            children: [
+              Utils.addFlexibleSpace(),
+              CustomButton(
+                onPressed: () => onNextPressed(context),
+                text: 'Next',
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

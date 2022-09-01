@@ -13,7 +13,6 @@ class TopPassages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Utils.addFixedSpace(20),
         Text(
           'TOP PASSAGES',
           style: Styles.mainText.copyWith(
@@ -25,7 +24,6 @@ class TopPassages extends StatelessWidget {
         SizedBox(
           height: 150,
           child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
             itemCount: passages.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Padding(

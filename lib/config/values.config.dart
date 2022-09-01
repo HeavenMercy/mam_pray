@@ -1,8 +1,7 @@
 abstract class Values {
-  static const double padding = 20;
-
-  static const double titleSize = 50;
-  static const double radius = 10;
+  /// nombre minimum de passage pour afficher les tops
+  static int minCountForTop = 6;
+  static int topPassageCount = 3;
 
   static const basicCategories = [
     'Wedding',

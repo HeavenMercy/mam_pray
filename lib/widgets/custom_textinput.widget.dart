@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 
-import '../config/values.config.dart';
-
 class CustomTextInput extends StatelessWidget {
   const CustomTextInput({
     Key? key,
     required this.hintText,
     required this.onChanged,
     this.prefixIcon,
-    this.padding = const EdgeInsets.all(Values.padding / 2),
+    this.padding = const EdgeInsets.all(10),
   }) : super(key: key);
 
   final String hintText;
@@ -28,7 +26,7 @@ class CustomTextInput extends StatelessWidget {
         fillColor: Styles.secColor,
         focusColor: Styles.mainColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Values.radius),
+          borderRadius: BorderRadius.circular(5),
         ),
       ),
     );

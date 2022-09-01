@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
-import 'package:mam_pray/models/passage.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/page_container.widget.dart';
+import 'package:mam_pray/widgets/passage.widget.dart';
 import 'package:mam_pray/widgets/top_passages.widget.dart';
 import 'package:provider/provider.dart';
 
@@ -13,26 +13,9 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var model = Provider.of<AppModel>(context);
-    var topPassages = <Passage>[
-      Passage(
-          book: 'book',
-          chapter: 10,
-          verseStart: 1,
-          verseEnd: 5,
-          categories: [1, 2, 8]),
-      Passage(
-          book: 'Epitre Selon St Paul',
-          chapter: 10,
-          verseStart: 1,
-          verseEnd: 5,
-          categories: [1, 2, 8]),
-      Passage(
-          book: 'book',
-          chapter: 10,
-          verseStart: 1,
-          verseEnd: 5,
-          categories: [1, 2, 8]),
-    ];
+
+    var topPassages = model.getTopPassages();
+    var passages = model.getPassages();
 
     return PageContainer(
       setPadding: false,
@@ -43,7 +26,7 @@ class HomeView extends StatelessWidget {
               color: Styles.secColor,
               boxShadow: [
                 BoxShadow(color: Styles.mainColor, offset: Offset(0, 5)),
-                BoxShadow(color: Styles.bgColor, offset: Offset(0, 2)),
+                BoxShadow(color: Styles.bgColor, offset: Offset(0, 2.5)),
               ],
             ),
             child: Column(
@@ -88,8 +71,24 @@ class HomeView extends StatelessWidget {
               ],
             ),
           ),
-          Utils.addFixedSpace(10),
-          if (topPassages.isNotEmpty) TopPassages(passages: topPassages),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView(
+                children: [
+                  Utils.addFixedSpace(10),
+                  if (topPassages.isNotEmpty)
+                    TopPassages(passages: topPassages),
+                  ...passages.map((passage) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: BasicPassage(passage: passage),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

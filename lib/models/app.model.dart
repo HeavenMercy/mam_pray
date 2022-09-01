@@ -57,11 +57,12 @@ class AppModel {
   }
 
   bool addCategory(String name, {bool canDelete = true}) {
-    var category = PassageCategory(
-        id: (lastCategoryId + 1), name: name, canDelete: canDelete);
+    var nextCategoryid = lastCategoryId + 1;
+    var category =
+        PassageCategory(id: nextCategoryid, name: name, canDelete: canDelete);
 
     if (!categoryExists(category)) {
-      lastCategoryId += 1;
+      lastCategoryId = nextCategoryid;
       categories.add(category);
       return true;
     }
@@ -84,6 +85,20 @@ class AppModel {
     });
   }
 
+  List<Passage> getTopPassages() {
+    if (passages.length < Values.minCountForTop) return [];
+
+    var top = passages.map((e) => e).toList(growable: false);
+    top.sort((a, b) => b.viewCount.compareTo(a.viewCount));
+    return top.sublist(0, Values.topPassageCount);
+  }
+
+  List<Passage> getPassages() {
+    var passages = this.passages.map((e) => e).toList(growable: false);
+    passages.sort((a, b) => b.viewCount.compareTo(a.viewCount));
+    return passages;
+  }
+
   // FILE MANAGEMENT
 
   static Future<File> get _localFile async {
@@ -103,7 +118,78 @@ class AppModel {
       model = AppModel.fromJson(json.decode(str));
       print('loaded $model');
     } catch (exception) {
-      model = AppModel(firstname: '', categories: [], passages: []);
+      model = AppModel(firstname: '', categories: [], passages: <Passage>[
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 2,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'Epitre Selon St Paul',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 8,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'Epitre Selon St Paul',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 8,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'Epitre Selon St Paul',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 8,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 5,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 1,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 6,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 22,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 12,
+            categories: [1, 2, 8]),
+        Passage(
+            book: 'book',
+            chapter: 10,
+            verseStart: 1,
+            verseEnd: 5,
+            viewCount: 9,
+            categories: [1, 2, 8]),
+      ]);
       print('default model created...');
     }
 
