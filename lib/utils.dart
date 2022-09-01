@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 abstract class Utils {
@@ -31,5 +33,17 @@ abstract class Utils {
 
   static Widget addFlexibleSpace() {
     return Expanded(child: Container());
+  }
+
+  static const inviteMessages = [
+    'What do you want to read today?',
+    'Read to relive your faith!',
+    'Are you looking for answer?',
+    'Faith is everything!'
+  ];
+
+  static String getRandomsInvite() {
+    var index = Random().nextInt(inviteMessages.length);
+    return inviteMessages[index];
   }
 }

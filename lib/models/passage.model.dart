@@ -5,19 +5,22 @@ class Passage {
     required this.verseStart,
     required this.verseEnd,
     required this.categories,
+    this.viewCount = 0,
   });
 
   final String book;
-  final String chapter;
-  final String verseStart;
-  final String verseEnd;
+  final int chapter;
+  final int verseStart;
+  final int verseEnd;
+  final int viewCount;
   final List<int> categories;
 
   Passage copyWith({
     String? book,
-    String? chapter,
-    String? verseStart,
-    String? verseEnd,
+    int? chapter,
+    int? verseStart,
+    int? verseEnd,
+    int? viewCount,
     List<int>? categories,
   }) =>
       Passage(
@@ -25,6 +28,7 @@ class Passage {
         chapter: chapter ?? this.chapter,
         verseStart: verseStart ?? this.verseStart,
         verseEnd: verseEnd ?? this.verseEnd,
+        viewCount: viewCount ?? this.viewCount,
         categories: categories ?? this.categories,
       );
 
@@ -33,6 +37,7 @@ class Passage {
         chapter: json["chapter"],
         verseStart: json["verse_start"],
         verseEnd: json["verse_end"],
+        viewCount: json["view_count"],
         categories: List<int>.from(json["categories"].map((x) => x)),
       );
 
@@ -41,6 +46,7 @@ class Passage {
         "chapter": chapter,
         "verse_start": verseStart,
         "verse_end": verseEnd,
+        "view_count": viewCount,
         "categories": List<dynamic>.from(categories.map((x) => x)),
       };
 }

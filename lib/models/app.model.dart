@@ -78,16 +78,18 @@ class AppModel {
   bool passageExists(Passage passage) {
     return passages.any((e) {
       return (Utils.isSameString(e.book, passage.book) ||
-          Utils.isSameString(e.chapter, passage.chapter) ||
-          Utils.isSameString(e.verseStart, passage.verseStart) ||
-          Utils.isSameString(e.verseEnd, passage.verseEnd));
+          (e.chapter == passage.chapter) ||
+          (e.verseStart == passage.verseStart) ||
+          (e.verseEnd == passage.verseEnd));
     });
   }
 
   // FILE MANAGEMENT
 
   static Future<File> get _localFile async {
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await getTemporaryDirectory();
+    if (!(await directory.exists())) await directory.create(recursive: true);
+    print('loading $directory...');
     return File('${directory.path}/mam_save.json');
   }
 
@@ -96,13 +98,13 @@ class AppModel {
 
     try {
       var file = await _localFile;
-      print('loading $file...');
       var str = await file.readAsString();
 
       model = AppModel.fromJson(json.decode(str));
       print('loaded $model');
     } catch (exception) {
       model = AppModel(firstname: '', categories: [], passages: []);
+      print('default model created...');
     }
 
     model.tryNormalizeCategories();

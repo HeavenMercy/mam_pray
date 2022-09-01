@@ -5,19 +5,19 @@ abstract class Values {
   static const double radius = 10;
 
   static const basicCategories = [
-    'Mariage',
-    'Louange',
-    'Action de Grace et Joie',
-    'Confiance et Esperance',
-    'Epreuves',
-    'Pardon des Péchés',
-    'Repas',
-    'Travail',
-    'Paix',
-    'Maladie',
-    'Deuil',
-    'Prière du Matin',
-    'Prière du Soir',
-    'Carème'
+    'Wedding',
+    'Praise',
+    'Thanksgiving and Joy',
+    'Confidence and Hope',
+    'Trials',
+    'Forgiveness of Sins',
+    'Meals',
+    'Work',
+    'Peace',
+    'Sickness',
+    'Mourning',
+    'Morning Prayer',
+    'Evening Prayer',
+    'Lent',
   ];
 }
