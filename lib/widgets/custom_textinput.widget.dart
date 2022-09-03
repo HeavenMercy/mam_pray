@@ -19,6 +19,7 @@ class CustomTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       onChanged: onChanged,
+      cursorColor: Styles.mainColor,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,

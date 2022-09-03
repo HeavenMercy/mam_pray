@@ -27,7 +27,7 @@ class TopPassages extends StatelessWidget {
             itemCount: passages.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(0.0),
               child: TopPassage(passage: passages[index]),
             ),
           ),

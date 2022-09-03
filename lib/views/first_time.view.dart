@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
-import 'package:mam_pray/config/values.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/views/home.view.dart';
@@ -32,19 +31,21 @@ class _FirstTimeViewState extends State<FirstTimeView> {
           ),
           Utils.addFixedSpace(5),
           const Text('Welcome', style: Styles.subText),
-          Utils.addFixedSpace(65),
+          Utils.addFixedSpace(180),
           CustomTextInput(
             hintText: "what's your firstname?",
             prefixIcon: const Icon(Icons.person),
             onChanged: (value) => fname = value,
           ),
-          Expanded(child: Container()),
+          Utils.addFlexibleSpace(),
           Row(
             children: [
               Utils.addFlexibleSpace(),
               CustomButton(
                 onPressed: () => onNextPressed(context),
                 text: 'Next',
+                icon: Icons.fast_forward,
+                iconAfter: true,
               ),
             ],
           ),

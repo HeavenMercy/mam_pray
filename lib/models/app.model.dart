@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:mam_pray/config/values.config.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'category.model.dart';
 import 'passage.model.dart';
 
-class AppModel {
+class AppModel extends ChangeNotifier {
   AppModel({
     required this.firstname,
     required this.categories,
@@ -50,24 +51,44 @@ class AppModel {
         "passages": List<dynamic>.from(passages.map((x) => x.toJson())),
       };
 
-  bool categoryExists(PassageCategory category) {
-    return categories.any((e) {
-      return Utils.isSameString(e.name, category.name);
+  // CATEGORY MANAGEMENT
+
+  bool categoryExists(String name) {
+    return categories.any((category) {
+      return Utils.isSameString(category.name, name);
     });
   }
 
-  bool addCategory(String name, {bool canDelete = true}) {
+  PassageCategory getCategory(int id) {
+    return categories.firstWhere((category) => category.id == id,
+        orElse: () => PassageCategory(id: -1, name: ''));
+  }
+
+  void addCategory(String name, {bool canDelete = true}) {
     var nextCategoryid = lastCategoryId + 1;
     var category =
         PassageCategory(id: nextCategoryid, name: name, canDelete: canDelete);
 
-    if (!categoryExists(category)) {
+    if (!categoryExists(category.name)) {
       lastCategoryId = nextCategoryid;
       categories.add(category);
-      return true;
+      notifyListeners();
     }
+  }
 
-    return false;
+  void updateCategoryName(int id, String name) {
+    var category = getCategory(id);
+
+    if (category.id != -1) {
+      categories.remove(category);
+      categories.add(category.copyWith(name: name));
+      notifyListeners();
+    }
+  }
+
+  void deleteCategory(int id) {
+    categories.removeWhere((category) => (category.id == id));
+    notifyListeners();
   }
 
   void tryNormalizeCategories() {
@@ -75,6 +96,8 @@ class AppModel {
       addCategory(category, canDelete: false);
     }
   }
+
+  // PASSAGE MANAGEMENT
 
   bool passageExists(Passage passage) {
     return passages.any((e) {

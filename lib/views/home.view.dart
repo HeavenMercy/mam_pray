@@ -3,7 +3,7 @@ import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/page_container.widget.dart';
-import 'package:mam_pray/widgets/passage.widget.dart';
+import 'package:mam_pray/widgets/basic_passage.widget.dart';
 import 'package:mam_pray/widgets/top_passages.widget.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +26,7 @@ class HomeView extends StatelessWidget {
               color: Styles.secColor,
               boxShadow: [
                 BoxShadow(color: Styles.mainColor, offset: Offset(0, 5)),
-                BoxShadow(color: Styles.bgColor, offset: Offset(0, 2.5)),
+                BoxShadow(color: Styles.bgColor, offset: Offset(0, 3.5)),
               ],
             ),
             child: Column(

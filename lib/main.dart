@@ -9,7 +9,7 @@ void main() {
     future: AppModel.load(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       }
 
       return Provider(
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var model = Provider.of<AppModel>(context);
+    var model = context.read<AppModel>();
 
     return MaterialApp(
       title: 'Flutter Demo',
