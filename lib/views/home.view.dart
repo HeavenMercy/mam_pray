@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/utils.dart';
+import 'package:mam_pray/views/categories.view.dart';
+import 'package:mam_pray/widgets/custom_button.widget.dart';
 import 'package:mam_pray/widgets/page_container.widget.dart';
 import 'package:mam_pray/widgets/basic_passage.widget.dart';
 import 'package:mam_pray/widgets/top_passages.widget.dart';
@@ -49,25 +51,19 @@ class HomeView extends StatelessWidget {
                 Row(
                   children: [
                     Utils.addFlexibleSpace(),
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(primary: Styles.bgColor),
-                      icon: const Icon(
-                        Icons.settings,
-                        color: Styles.secColor,
-                        size: 18,
-                      ),
-                      label: Text(
-                        'Manage Categories',
-                        style: Styles.mainText.copyWith(
-                          fontSize: 15,
-                          color: Styles.mainColor,
+                    CustomButton(
+                      margin: 10,
+                      padding: 10,
+                      icon: Icons.settings,
+                      text: 'Manage Categories',
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CategoriesView(),
                         ),
                       ),
                     ),
                   ],
                 ),
-                Utils.addFlexibleSpace(),
               ],
             ),
           ),

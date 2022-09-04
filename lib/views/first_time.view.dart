@@ -25,13 +25,14 @@ class _FirstTimeViewState extends State<FirstTimeView> {
       loading: loading,
       child: Column(
         children: [
+          Utils.addFixedSpace(40),
           Text(
             'Mam Pray',
             style: Styles.mainText.copyWith(fontSize: 50),
           ),
-          Utils.addFixedSpace(5),
+          Utils.addFixedSpace(20),
           const Text('Welcome', style: Styles.subText),
-          Utils.addFixedSpace(180),
+          Utils.addFixedSpace(100),
           CustomTextInput(
             hintText: "what's your firstname?",
             prefixIcon: const Icon(Icons.person),

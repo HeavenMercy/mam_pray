@@ -12,7 +12,7 @@ void main() {
         return const Center(child: CircularProgressIndicator());
       }
 
-      return Provider(
+      return ChangeNotifierProvider(
         create: (context) => (snapshot.data as AppModel),
         builder: (context, child) {
           return const MyApp();

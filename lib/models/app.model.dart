@@ -67,7 +67,7 @@ class AppModel extends ChangeNotifier {
   void addCategory(String name, {bool canDelete = true}) {
     var nextCategoryid = lastCategoryId + 1;
     var category =
-        PassageCategory(id: nextCategoryid, name: name, canDelete: canDelete);
+        PassageCategory(id: nextCategoryid, name: name, editable: canDelete);
 
     if (!categoryExists(category.name)) {
       lastCategoryId = nextCategoryid;
@@ -95,6 +95,13 @@ class AppModel extends ChangeNotifier {
     for (var category in Values.basicCategories) {
       addCategory(category, canDelete: false);
     }
+  }
+
+  List<PassageCategory> findCategories(String name) {
+    return categories
+        .where((category) =>
+            category.name.toLowerCase().contains(name.toLowerCase()))
+        .toList();
   }
 
   // PASSAGE MANAGEMENT

@@ -7,9 +7,11 @@ class CustomTextInput extends StatelessWidget {
     required this.hintText,
     required this.onChanged,
     this.prefixIcon,
+    this.initialText = '',
     this.padding = const EdgeInsets.all(10),
   }) : super(key: key);
 
+  final String initialText;
   final String hintText;
   final Widget? prefixIcon;
   final EdgeInsets padding;
@@ -17,10 +19,14 @@ class CustomTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textCtrl = TextEditingController();
+    if (initialText.isNotEmpty) textCtrl.text = initialText;
+
     return TextField(
+      controller: (initialText.isNotEmpty ? textCtrl : null),
       onChanged: onChanged,
-      cursorColor: Styles.mainColor,
       decoration: InputDecoration(
+        contentPadding: padding,
         hintText: hintText,
         filled: true,
         prefixIcon: prefixIcon,

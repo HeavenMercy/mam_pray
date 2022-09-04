@@ -3,15 +3,21 @@ import 'package:mam_pray/config/enums.config.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/models/category.model.dart';
+import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/custom_textinput.widget.dart';
 import 'package:provider/provider.dart';
 
 class CategoryView extends StatefulWidget {
-  const CategoryView({Key? key, required this.categoryId, required this.state})
-      : super(key: key);
+  const CategoryView({
+    Key? key,
+    required this.categoryId,
+    required this.state,
+    required this.onTap,
+  }) : super(key: key);
 
   final int categoryId;
   final CategoryViewState state;
+  final void Function(bool selected) onTap;
 
   @override
   State<CategoryView> createState() => _CategoryViewState();
@@ -30,9 +36,9 @@ class _CategoryViewState extends State<CategoryView> {
 
     Widget view = Container();
     if (state == CategoryViewState.view) {
-      view = Card(child: buildForView(context, category));
+      view = buildForView(context, category);
     } else if (state == CategoryViewState.edit) {
-      view = Card(child: buildForEdit(context, category));
+      view = buildForEdit(context, category);
     } else if (state == CategoryViewState.select) {
       view = buildForSelect(context, category);
     }
@@ -42,8 +48,7 @@ class _CategoryViewState extends State<CategoryView> {
       shadowColor: selected ? Styles.mainColor : Styles.secColor,
       elevation: 5,
       child: Container(
-        height: 50,
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: view,
       ),
     );
@@ -55,24 +60,36 @@ class _CategoryViewState extends State<CategoryView> {
     return Row(
       children: [
         Expanded(
-          child: Text(category.name),
-        ),
-        IconButton(
-          onPressed: () => setState(() {
-            state = CategoryViewState.edit;
-          }),
-          icon: const Icon(
-            Icons.edit,
-            color: Styles.mainColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15.0),
+            child: Text(category.name),
           ),
         ),
-        IconButton(
-          onPressed: () => model.deleteCategory(category.id),
-          icon: const Icon(
-            Icons.delete_forever,
-            color: Colors.red,
+        if (category.editable)
+          IconButton(
+            onPressed: () => setState(() {
+              state = CategoryViewState.edit;
+            }),
+            icon: const Icon(
+              Icons.edit,
+              color: Styles.mainColor,
+            ),
           ),
-        ),
+        if (category.editable)
+          IconButton(
+            onPressed: () => Utils.showSnackBar(
+              context,
+              msg: 'You will delete the category and its passages?',
+              action: SnackBarAction(
+                label: 'Do it!',
+                onPressed: () => model.deleteCategory(category.id),
+              ),
+            ),
+            icon: const Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+            ),
+          ),
       ],
     );
   }
@@ -84,6 +101,8 @@ class _CategoryViewState extends State<CategoryView> {
       children: [
         Expanded(
           child: CustomTextInput(
+            padding: const EdgeInsets.all(10),
+            initialText: category.name,
             hintText: 'Category Name',
             onChanged: (name) => this.name = name,
           ),
@@ -91,6 +110,7 @@ class _CategoryViewState extends State<CategoryView> {
         IconButton(
           onPressed: () {
             if (name.isEmpty) return;
+            state = CategoryViewState.none;
             model.updateCategoryName(category.id, name);
           },
           icon: const Icon(
@@ -112,11 +132,17 @@ class _CategoryViewState extends State<CategoryView> {
   }
 
   Widget buildForSelect(BuildContext context, PassageCategory category) {
-    return Row(
-      children: [
-        Expanded(child: Text(category.name)),
-        const Icon(Icons.check),
-      ],
+    return GestureDetector(
+      onTap: () => setState(() {
+        selected = !selected;
+        widget.onTap(selected);
+      }),
+      child: Row(
+        children: [
+          Expanded(child: Text(category.name)),
+          Icon(selected ? Icons.close : Icons.check),
+        ],
+      ),
     );
   }
 }

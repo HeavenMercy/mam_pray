@@ -2,34 +2,34 @@ class PassageCategory {
   PassageCategory({
     required this.id,
     required this.name,
-    this.canDelete = false,
+    this.editable = false,
   });
 
   final int id;
   final String name;
-  final bool canDelete;
+  final bool editable;
 
   PassageCategory copyWith({
     int? id,
     String? name,
-    bool? canDelete,
+    bool? editable,
   }) =>
       PassageCategory(
         id: id ?? this.id,
         name: name ?? this.name,
-        canDelete: canDelete ?? this.canDelete,
+        editable: editable ?? this.editable,
       );
 
   factory PassageCategory.fromJson(Map<String, dynamic> json) =>
       PassageCategory(
         id: json["id"],
         name: json["name"],
-        canDelete: json["can_delete"],
+        editable: json["editable"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "can_delete": canDelete,
+        "editable": editable,
       };
 }
