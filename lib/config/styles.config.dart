@@ -16,5 +16,6 @@ abstract class Styles {
   static const subText = TextStyle(
     color: mainColor,
     fontSize: 20,
+    fontStyle: FontStyle.italic,
   );
 }

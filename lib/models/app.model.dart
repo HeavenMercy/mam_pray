@@ -87,6 +87,7 @@ class AppModel extends ChangeNotifier {
   }
 
   void deleteCategory(int id) {
+    passages.removeWhere((passage) => passage.categories.contains(id));
     categories.removeWhere((category) => (category.id == id));
     notifyListeners();
   }
@@ -155,70 +156,80 @@ class AppModel extends ChangeNotifier {
             verseStart: 1,
             verseEnd: 5,
             viewCount: 2,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'Epitre Selon St Paul',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 8,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'Epitre Selon St Paul',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 8,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'Epitre Selon St Paul',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 8,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 5,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 1,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 6,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 22,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 12,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
         Passage(
             book: 'book',
             chapter: 10,
             verseStart: 1,
             verseEnd: 5,
             viewCount: 9,
-            categories: [1, 2, 8]),
+            categories: [1, 2, 8],
+            creationDate: DateTime.now()),
       ]);
       print('default model created...');
     }

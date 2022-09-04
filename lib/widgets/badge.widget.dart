@@ -21,7 +21,7 @@ class Badge extends StatelessWidget {
         borderRadius: BorderRadius.circular(3),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(5.0),
         child: Row(children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -30,7 +30,7 @@ class Badge extends StatelessWidget {
               style: Styles.subText.copyWith(color: color),
             ),
           ),
-          Icon(icon, color: color),
+          if (icon != null) Icon(icon, color: color),
         ]),
       ),
     );

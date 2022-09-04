@@ -62,7 +62,13 @@ class _CategoryViewState extends State<CategoryView> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15.0),
-            child: Text(category.name),
+            child: Text(
+              category.name,
+              style: Styles.mainText.copyWith(
+                color: Styles.bgColor,
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
         if (category.editable)
@@ -79,9 +85,9 @@ class _CategoryViewState extends State<CategoryView> {
           IconButton(
             onPressed: () => Utils.showSnackBar(
               context,
-              msg: 'You will delete the category and its passages?',
+              msg: 'You will delete the category and its passages',
               action: SnackBarAction(
-                label: 'Do it!',
+                label: 'CONFIRM',
                 onPressed: () => model.deleteCategory(category.id),
               ),
             ),

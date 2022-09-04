@@ -71,7 +71,6 @@ class _FirstTimeViewState extends State<FirstTimeView> {
     });
 
     model.firstname = fname;
-    print('first name to save: ${model.firstname}');
     model.save().then((done) {
       if (done) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(

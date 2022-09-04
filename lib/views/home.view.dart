@@ -38,12 +38,12 @@ class HomeView extends StatelessWidget {
                 Text(
                   'Welcome ${model.firstname},',
                   style: Styles.mainText
-                      .copyWith(fontSize: 40, color: Styles.bgColor),
+                      .copyWith(fontSize: 35, color: Styles.bgColor),
                 ),
                 Text(
                   Utils.getRandomsInvite(),
                   style: Styles.subText.copyWith(
-                    fontSize: 18,
+                    fontSize: 15,
                     color: Styles.bgColor,
                   ),
                 ),

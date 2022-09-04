@@ -114,8 +114,6 @@ class _CategoriesViewState extends State<CategoriesView> {
                         } else {
                           selectedCategories.remove(id);
                         }
-
-                        print(selectedCategories);
                       },
                       categoryId: result[index].id,
                       state: (widget.forSelecion

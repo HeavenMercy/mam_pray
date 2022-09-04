@@ -49,16 +49,15 @@ class TopPassage extends StatelessWidget {
               Utils.addFixedSpace(10),
               Text(
                 'Chapter ${passage.chapter}',
-                style: Styles.subText.copyWith(
+                style: Styles.mainText.copyWith(
                   fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
                   color: Styles.bgColor,
                 ),
               ),
               Utils.addFlexibleSpace(),
               Text(
                 '${passage.verseStart}:${passage.verseEnd}',
-                style: Styles.subText.copyWith(
+                style: Styles.mainText.copyWith(
                   fontSize: fontSize,
                   color: Styles.bgColor,
                 ),

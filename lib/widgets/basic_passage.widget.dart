@@ -26,18 +26,16 @@ class BasicPassage extends StatelessWidget {
               children: [
                 Text(
                   passage.book,
-                  style: Styles.subText.copyWith(
+                  style: Styles.mainText.copyWith(
                     fontSize: fontSize,
-                    fontWeight: FontWeight.bold,
                     color: Styles.bgColor,
                   ),
                 ),
                 Utils.addFlexibleSpace(),
                 Text(
                   '${passage.verseStart}:${passage.verseStart}',
-                  style: Styles.subText.copyWith(
+                  style: Styles.mainText.copyWith(
                     fontSize: fontSize,
-                    fontWeight: FontWeight.bold,
                     color: Styles.bgColor,
                   ),
                 ),
