@@ -2,6 +2,7 @@ abstract class Values {
   /// nombre minimum de passage pour afficher les tops
   static int minCountForTop = 6;
   static int topPassageCount = 3;
+  static int maxCategoriesCount = 4;
 
   static const basicCategories = [
     'Wedding',

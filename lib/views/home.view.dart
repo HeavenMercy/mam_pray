@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
+import 'package:mam_pray/models/passage.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/views/categories.view.dart';
+import 'package:mam_pray/views/passage.view.dart';
 import 'package:mam_pray/widgets/custom_button.widget.dart';
 import 'package:mam_pray/widgets/page_container.widget.dart';
 import 'package:mam_pray/widgets/basic_passage.widget.dart';
+import 'package:mam_pray/widgets/page_header.widget.dart';
 import 'package:mam_pray/widgets/top_passages.widget.dart';
 import 'package:provider/provider.dart';
 
@@ -14,32 +17,25 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var model = Provider.of<AppModel>(context);
+    var model = context.watch<AppModel>();
 
     var topPassages = model.getTopPassages();
     var passages = model.getPassages();
 
     return PageContainer(
-      setPadding: false,
       child: Column(
         children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Styles.secColor,
-              boxShadow: [
-                BoxShadow(color: Styles.mainColor, offset: Offset(0, 5)),
-                BoxShadow(color: Styles.bgColor, offset: Offset(0, 3.5)),
-              ],
-            ),
+          Pageheader(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Utils.addFlexibleSpace(),
+                Utils.addFixedSpace(10),
                 Text(
                   'Welcome ${model.firstname},',
                   style: Styles.mainText
                       .copyWith(fontSize: 35, color: Styles.bgColor),
                 ),
+                Utils.addFixedSpace(5),
                 Text(
                   Utils.getRandomsInvite(),
                   style: Styles.subText.copyWith(
@@ -47,7 +43,7 @@ class HomeView extends StatelessWidget {
                     color: Styles.bgColor,
                   ),
                 ),
-                Utils.addFlexibleSpace(),
+                Utils.addFixedSpace(10),
                 Row(
                   children: [
                     Utils.addFlexibleSpace(),
@@ -70,23 +66,46 @@ class HomeView extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ListView(
-                children: [
-                  Utils.addFixedSpace(10),
-                  if (topPassages.isNotEmpty)
-                    TopPassages(passages: topPassages),
-                  ...passages.map((passage) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: BasicPassage(passage: passage),
-                    );
-                  }),
-                ],
-              ),
+              child: (passages.isNotEmpty
+                  ? ListView(
+                      children: [
+                        Utils.addFixedSpace(10),
+                        if (topPassages.isNotEmpty)
+                          TopPassages(
+                              passages: topPassages, onTap: onPassageTap),
+                        ...passages.map((passage) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: BasicPassage(
+                                passage: passage, onTap: onPassageTap),
+                          );
+                        }),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.cancel,
+                          color: Styles.secColor,
+                        ),
+                        Utils.addFixedSpace(10),
+                        const Text(
+                          'No passage created yet',
+                          style: Styles.mainText,
+                        )
+                      ],
+                    )),
             ),
           )
         ],
       ),
     );
+  }
+
+  void onPassageTap(BuildContext context, Passage passage) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PassageView(passage: passage),
+    ));
   }
 }

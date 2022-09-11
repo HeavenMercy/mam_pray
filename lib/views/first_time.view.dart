@@ -23,34 +23,37 @@ class _FirstTimeViewState extends State<FirstTimeView> {
   Widget build(BuildContext context) {
     return PageContainer(
       loading: loading,
-      child: Column(
-        children: [
-          Utils.addFixedSpace(40),
-          Text(
-            'Mam Pray',
-            style: Styles.mainText.copyWith(fontSize: 50),
-          ),
-          Utils.addFixedSpace(20),
-          const Text('Welcome', style: Styles.subText),
-          Utils.addFixedSpace(100),
-          CustomTextInput(
-            hintText: "what's your firstname?",
-            prefixIcon: const Icon(Icons.person),
-            onChanged: (value) => fname = value,
-          ),
-          Utils.addFlexibleSpace(),
-          Row(
-            children: [
-              Utils.addFlexibleSpace(),
-              CustomButton(
-                onPressed: () => onNextPressed(context),
-                text: 'Next',
-                icon: Icons.fast_forward,
-                iconAfter: true,
-              ),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Utils.addFixedSpace(40),
+            Text(
+              'Mam Pray',
+              style: Styles.mainText.copyWith(fontSize: 50),
+            ),
+            Utils.addFixedSpace(20),
+            const Text('Welcome', style: Styles.subText),
+            Utils.addFixedSpace(100),
+            CustomTextInput(
+              hintText: "what's your firstname?",
+              prefixIcon: const Icon(Icons.person),
+              onChanged: (value) => fname = value,
+            ),
+            Utils.addFlexibleSpace(),
+            Row(
+              children: [
+                Utils.addFlexibleSpace(),
+                CustomButton(
+                  onPressed: () => onNextPressed(context),
+                  text: 'Next',
+                  icon: Icons.fast_forward,
+                  iconAfter: true,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

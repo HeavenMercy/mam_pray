@@ -2,44 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:mam_pray/config/enums.config.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
+import 'package:mam_pray/models/passage.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/category_view.widget.dart';
 import 'package:mam_pray/widgets/custom_button.widget.dart';
 import 'package:mam_pray/widgets/custom_textinput.widget.dart';
 import 'package:mam_pray/widgets/page_container.widget.dart';
+import 'package:mam_pray/widgets/page_header.widget.dart';
 import 'package:provider/provider.dart';
 
 class CategoriesView extends StatefulWidget {
-  const CategoriesView({Key? key, this.forSelecion = false}) : super(key: key);
+  const CategoriesView({Key? key, this.forSelecion = false, this.passage})
+      : super(key: key);
 
   final bool forSelecion;
+  final Passage? passage;
 
   @override
   State<CategoriesView> createState() => _CategoriesViewState();
 }
 
 class _CategoriesViewState extends State<CategoriesView> {
-  var categoryName = '';
+  var categoryFiltar = '';
   var selectedCategories = <int>[];
 
   @override
   Widget build(BuildContext context) {
     var model = context.watch<AppModel>();
-    var result = model.findCategories(categoryName);
+    var result = model.findCategories(categoryFiltar);
     result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     return PageContainer(
-      setPadding: false,
       child: Column(
         children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Styles.secColor,
-              boxShadow: [
-                BoxShadow(color: Styles.mainColor, offset: Offset(0, 5)),
-                BoxShadow(color: Styles.bgColor, offset: Offset(0, 3.5)),
-              ],
-            ),
+          Pageheader(
             child: Column(
               children: [
                 Utils.addFixedSpace(10),
@@ -75,9 +71,10 @@ class _CategoriesViewState extends State<CategoriesView> {
                         child: CustomTextInput(
                           prefixIcon: const Icon(Icons.search),
                           hintText: 'search...',
+                          canClear: true,
                           onChanged: (value) {
                             setState(() {
-                              categoryName = value;
+                              categoryFiltar = value;
                             });
                           },
                         ),
@@ -90,7 +87,7 @@ class _CategoriesViewState extends State<CategoriesView> {
                         icon: Icons.add,
                         text: 'Add',
                         onPressed: () {
-                          model.addCategory(categoryName);
+                          model.addCategory(categoryFiltar);
                         },
                       ),
                   ],
@@ -98,6 +95,7 @@ class _CategoriesViewState extends State<CategoriesView> {
               ],
             ),
           ),
+          Utils.addFixedSpace(15),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(0.0),

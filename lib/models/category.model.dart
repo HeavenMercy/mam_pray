@@ -5,9 +5,9 @@ class PassageCategory {
     this.editable = false,
   });
 
-  final int id;
-  final String name;
-  final bool editable;
+  int id;
+  String name;
+  bool editable;
 
   PassageCategory copyWith({
     int? id,

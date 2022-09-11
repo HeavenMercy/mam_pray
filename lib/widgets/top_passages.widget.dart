@@ -5,9 +5,11 @@ import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/top_passage.widget.dart';
 
 class TopPassages extends StatelessWidget {
-  const TopPassages({Key? key, required this.passages}) : super(key: key);
+  const TopPassages({Key? key, required this.passages, required this.onTap})
+      : super(key: key);
 
   final List<Passage> passages;
+  final OnTopPassageTap onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class TopPassages extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(0.0),
-              child: TopPassage(passage: passages[index]),
+              child: TopPassage(passage: passages[index], onTap: onTap),
             ),
           ),
         ),

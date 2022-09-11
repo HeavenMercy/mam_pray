@@ -47,3 +47,23 @@ abstract class Utils {
     return inviteMessages[index];
   }
 }
+
+extension StringEnhanced on String {
+  String toTitleCase() {
+    var up = true;
+    var chars = [];
+
+    for (var c in split('')) {
+      if (c == ' ') {
+        up = true;
+      } else if (up) {
+        c = c.toUpperCase();
+        up = false;
+      }
+
+      chars.add(c);
+    }
+
+    return chars.join();
+  }
+}

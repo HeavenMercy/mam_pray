@@ -7,10 +7,11 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.onPressed,
     this.forLongPress = false,
-    this.padding = 15,
-    this.margin = 20,
+    this.padding = 8,
+    this.margin = 15,
     this.text = '',
     this.icon,
+    this.color = Styles.mainColor,
     this.iconAfter = false,
   }) : super(key: key);
 
@@ -21,19 +22,20 @@ class CustomButton extends StatelessWidget {
   final double margin;
   final IconData? icon;
   final bool iconAfter;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    var iconWidget = Icon(
-      icon,
-      color: Styles.bgColor,
-    );
+    var textColor =
+        color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+
+    var iconWidget = Icon(icon, color: textColor);
 
     return Padding(
       padding: EdgeInsets.all(margin),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Styles.mainColor,
+          primary: color,
           padding: EdgeInsets.all(padding),
         ),
         onLongPress: (forLongPress ? onPressed : null),
@@ -48,9 +50,7 @@ class CustomButton extends StatelessWidget {
             if (text.isNotEmpty)
               Text(
                 text,
-                style: Styles.mainText.copyWith(
-                  color: Styles.bgColor,
-                ),
+                style: Styles.mainText.copyWith(color: textColor),
               ),
             if ((icon != null) && iconAfter)
               Padding(
