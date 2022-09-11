@@ -219,7 +219,7 @@ class _PassageViewState extends State<PassageView> {
           Utils.addFlexibleSpace(),
           CustomButton(
             onPressed: () {
-              passage.fillFrom(editedPassage!);
+              model.fillPassage(passage, editedPassage!);
               setEdition(false);
             },
             icon: Icons.save,

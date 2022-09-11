@@ -122,6 +122,11 @@ class AppModel extends ChangeNotifier {
     );
   }
 
+  void fillPassage(Passage passage, Passage other) {
+    passage.fillFrom(other);
+    notifyListeners();
+  }
+
   void getNextPassageId() => ++lastPassageId;
 
   bool passageExists(Passage passage) {
