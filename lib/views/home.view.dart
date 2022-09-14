@@ -48,8 +48,8 @@ class HomeView extends StatelessWidget {
                   children: [
                     Utils.addFlexibleSpace(),
                     CustomButton(
-                      margin: 10,
-                      padding: 10,
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       icon: Icons.settings,
                       text: 'Manage Categories',
                       onPressed: () => Navigator.of(context).push(
@@ -97,6 +97,21 @@ class HomeView extends StatelessWidget {
                       ],
                     )),
             ),
+          ),
+          Row(
+            children: [
+              Utils.addFlexibleSpace(),
+              CustomButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CategoriesView(
+                    forSelecion: true,
+                    passage: AppModel.getEmptyPassage(),
+                  ),
+                )),
+                icon: Icons.note_add,
+                text: 'New Passage',
+              ),
+            ],
           )
         ],
       ),

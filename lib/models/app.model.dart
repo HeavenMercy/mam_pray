@@ -127,13 +127,13 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getNextPassageId() => ++lastPassageId;
+  int getNextPassageId() => ++lastPassageId;
 
   bool passageExists(Passage passage) {
     return passages.any((e) {
-      return (Utils.isSameString(e.book, passage.book) ||
-          (e.chapter == passage.chapter) ||
-          (e.verseStart == passage.verseStart) ||
+      return (Utils.isSameString(e.book, passage.book) &&
+          (e.chapter == passage.chapter) &&
+          (e.verseStart == passage.verseStart) &&
           (e.verseEnd == passage.verseEnd));
     });
   }
@@ -152,8 +152,24 @@ class AppModel extends ChangeNotifier {
     return passages;
   }
 
+  bool addPassage(Passage passage) {
+    if (passageExists(passage)) return false;
+
+    passage.id = lastPassageId + 1;
+    passage.creationDate = DateTime.now();
+    passages.add(passage);
+    notifyListeners();
+
+    return true;
+  }
+
   void deletePassage(int id) {
     passages.removeWhere((passage) => passage.id == id);
+    notifyListeners();
+  }
+
+  void viewPassage(Passage passage) {
+    passage.viewCount += 1;
     notifyListeners();
   }
 

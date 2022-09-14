@@ -4,6 +4,7 @@ import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/models/passage.model.dart';
 import 'package:mam_pray/utils.dart';
+import 'package:mam_pray/views/passage.view.dart';
 import 'package:mam_pray/widgets/category_view.widget.dart';
 import 'package:mam_pray/widgets/custom_button.widget.dart';
 import 'package:mam_pray/widgets/custom_textinput.widget.dart';
@@ -24,7 +25,6 @@ class CategoriesView extends StatefulWidget {
 
 class _CategoriesViewState extends State<CategoriesView> {
   var categoryFiltar = '';
-  var selectedCategories = <int>[];
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,8 @@ class _CategoriesViewState extends State<CategoriesView> {
                     ),
                     if (result.isEmpty)
                       CustomButton(
-                        padding: 10,
-                        margin: 0,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(0),
                         icon: Icons.add,
                         text: 'Add',
                         onPressed: () {
@@ -108,9 +108,9 @@ class _CategoriesViewState extends State<CategoriesView> {
                       onTap: (selected) {
                         var id = result[index].id;
                         if (selected) {
-                          selectedCategories.add(id);
+                          widget.passage?.categories.add(id);
                         } else {
-                          selectedCategories.remove(id);
+                          widget.passage?.categories.remove(id);
                         }
                       },
                       categoryId: result[index].id,
@@ -123,6 +123,31 @@ class _CategoriesViewState extends State<CategoriesView> {
               ),
             ),
           ),
+          if (widget.forSelecion)
+            Row(
+              children: [
+                Utils.addFlexibleSpace(),
+                CustomButton(
+                  onPressed: () {
+                    if (widget.passage != null) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => PassageView(
+                            forCreation: true,
+                            passage: widget.passage!,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  text: 'Next',
+                  iconAfter: true,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  icon: Icons.keyboard_double_arrow_right,
+                )
+              ],
+            )
         ],
       ),
     );

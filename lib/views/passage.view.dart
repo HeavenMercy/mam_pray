@@ -23,6 +23,8 @@ class PassageView extends StatefulWidget {
 }
 
 class _PassageViewState extends State<PassageView> {
+  var viewed = false;
+
   var enableEdition = false;
   var showCategories = true;
   Passage? editedPassage;
@@ -95,7 +97,7 @@ class _PassageViewState extends State<PassageView> {
                 right: textPadding,
               ),
               child: Container(
-                color: Colors.white,
+                color: Styles.secColor,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(10.0),
                   child: (enableEdition
@@ -204,7 +206,20 @@ class _PassageViewState extends State<PassageView> {
       return Row(
         children: [
           CustomButton(
-            onPressed: () => setEdition(false),
+            onPressed: () {
+              if (!widget.forCreation) {
+                return setEdition(false);
+              }
+
+              Utils.showSnackBar(
+                context,
+                msg: 'You will cancel the creation of passage',
+                action: SnackBarAction(
+                  label: 'CONFIRM',
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              );
+            },
             icon: Icons.cancel,
             text: 'Cancel',
             color: Colors.grey,
@@ -220,6 +235,9 @@ class _PassageViewState extends State<PassageView> {
           CustomButton(
             onPressed: () {
               model.fillPassage(passage, editedPassage!);
+
+              if (widget.forCreation) model.addPassage(passage);
+
               setEdition(false);
             },
             icon: Icons.save,

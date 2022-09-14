@@ -40,7 +40,7 @@ class BasicPassage extends StatelessWidget {
                   ),
                   Utils.addFlexibleSpace(),
                   Text(
-                    '${passage.verseStart}:${passage.verseStart}',
+                    '${passage.verseStart}:${passage.verseEnd}',
                     style: Styles.mainText.copyWith(
                       fontSize: fontSize,
                       color: Styles.bgColor,

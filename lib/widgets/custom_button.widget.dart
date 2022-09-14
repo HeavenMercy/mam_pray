@@ -7,8 +7,8 @@ class CustomButton extends StatelessWidget {
     Key? key,
     required this.onPressed,
     this.forLongPress = false,
-    this.padding = 8,
-    this.margin = 15,
+    this.padding = const EdgeInsets.all(8),
+    this.margin = const EdgeInsets.all(15),
     this.text = '',
     this.icon,
     this.color = Styles.mainColor,
@@ -18,8 +18,8 @@ class CustomButton extends StatelessWidget {
   final void Function() onPressed;
   final bool forLongPress;
   final String text;
-  final double padding;
-  final double margin;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
   final IconData? icon;
   final bool iconAfter;
   final Color color;
@@ -32,11 +32,11 @@ class CustomButton extends StatelessWidget {
     var iconWidget = Icon(icon, color: textColor);
 
     return Padding(
-      padding: EdgeInsets.all(margin),
+      padding: margin,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: color,
-          padding: EdgeInsets.all(padding),
+          padding: padding,
         ),
         onLongPress: (forLongPress ? onPressed : null),
         onPressed: (!forLongPress ? onPressed : null),
