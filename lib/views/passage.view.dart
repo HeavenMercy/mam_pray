@@ -5,6 +5,7 @@ import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/models/passage.model.dart';
 import 'package:mam_pray/services/bible_api.service.dart';
 import 'package:mam_pray/utils.dart';
+import 'package:mam_pray/views/categories.view.dart';
 import 'package:mam_pray/widgets/badge.widget.dart';
 import 'package:mam_pray/widgets/custom_button.widget.dart';
 import 'package:mam_pray/widgets/custom_textinput.widget.dart';
@@ -76,6 +77,7 @@ class _PassageViewState extends State<PassageView> {
                 Row(
                   children: [
                     Expanded(
+                      flex: 8,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blueGrey.shade700),
@@ -87,6 +89,19 @@ class _PassageViewState extends State<PassageView> {
                             : Icons.keyboard_double_arrow_down),
                       ),
                     ),
+                    if (enableEdition) Utils.addFlexibleSpace(),
+                    if (enableEdition)
+                      ElevatedButton.icon(
+                        onPressed: () => Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (context) => CategoriesView(
+                                      forSelecion: true,
+                                      passage: editedPassage,
+                                    )))
+                            .then((_) => setState(() {})),
+                        icon: const Icon(Icons.add),
+                        label: const Text('Handle Categories'),
+                      )
                   ],
                 ),
               ],
@@ -114,7 +129,7 @@ class _PassageViewState extends State<PassageView> {
                       : Text(
                           widget.passage.text,
                           textAlign: TextAlign.justify,
-                          style: const TextStyle(fontSize: 20),
+                          // style: const TextStyle(fontSize: 20),
                         )),
                 ),
               ),
@@ -197,7 +212,10 @@ class _PassageViewState extends State<PassageView> {
         Utils.addFixedSpace(5),
         Text(
           'created on: ${dt.year}/${dt.month}/${dt.day} ${dt.hour}:${dt.minute}',
-          style: Styles.subText.copyWith(fontSize: 15, color: Styles.bgColor),
+          style: Styles.subText.copyWith(
+            // fontSize: 15,
+            color: Styles.bgColor,
+          ),
         )
       ],
     );

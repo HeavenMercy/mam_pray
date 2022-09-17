@@ -9,13 +9,13 @@ abstract class Styles {
 
   static const mainText = TextStyle(
     color: secColor,
-    fontSize: 20,
+    // fontSize: 20,
     fontWeight: FontWeight.bold,
   );
 
   static const subText = TextStyle(
     color: mainColor,
-    fontSize: 20,
+    // fontSize: 20,
     fontStyle: FontStyle.italic,
   );
 }

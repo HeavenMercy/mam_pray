@@ -73,7 +73,7 @@ class _CategoryViewState extends State<CategoryView> {
               category.name,
               style: Styles.mainText.copyWith(
                 color: Styles.bgColor,
-                fontSize: 18,
+                // fontSize: 18,
               ),
             ),
           ),
@@ -85,7 +85,7 @@ class _CategoryViewState extends State<CategoryView> {
             }),
             icon: const Icon(
               Icons.edit,
-              color: Styles.mainColor,
+              color: Colors.amber,
             ),
           ),
         if (category.editable)
@@ -109,13 +109,14 @@ class _CategoryViewState extends State<CategoryView> {
 
   Widget buildForEdit(BuildContext context, PassageCategory category) {
     var model = Provider.of<AppModel>(context);
+    name = category.name;
 
     return Row(
       children: [
         Expanded(
           child: CustomTextInput(
             padding: const EdgeInsets.all(10),
-            initialText: category.name,
+            initialText: name,
             hintText: 'Category Name',
             onChanged: (name) => this.name = name,
           ),

@@ -13,12 +13,14 @@ class TopPassages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double titleFontSize = 18;
+
     return Column(
       children: [
         Text(
           'TOP PASSAGES',
           style: Styles.mainText.copyWith(
-            fontSize: 20,
+            fontSize: titleFontSize,
             color: Styles.secColor,
           ),
         ),
@@ -38,7 +40,7 @@ class TopPassages extends StatelessWidget {
         Text(
           'ALL PASSAGES',
           style: Styles.mainText.copyWith(
-            fontSize: 20,
+            fontSize: titleFontSize,
             color: Styles.secColor,
           ),
         ),

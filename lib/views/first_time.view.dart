@@ -27,13 +27,13 @@ class _FirstTimeViewState extends State<FirstTimeView> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Utils.addFixedSpace(40),
+            Utils.addFixedSpace(50),
             Text(
               'Mam Pray',
               style: Styles.mainText.copyWith(fontSize: 50),
             ),
-            Utils.addFixedSpace(20),
-            const Text('Welcome', style: Styles.subText),
+            Utils.addFixedSpace(10),
+            Text('Welcome', style: Styles.subText.copyWith(fontSize: 20)),
             Utils.addFixedSpace(100),
             CustomTextInput(
               hintText: "what's your firstname?",

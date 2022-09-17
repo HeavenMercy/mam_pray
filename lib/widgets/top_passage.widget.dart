@@ -16,7 +16,7 @@ class TopPassage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Size size = Size(180, 150);
-    const double fontSize = 20;
+    // const double fontSize = 20;
 
     var verseEnd =
         passage.verseEnd > passage.verseStart ? '-${passage.verseEnd}' : '';
@@ -45,7 +45,7 @@ class TopPassage extends StatelessWidget {
                   passage.book.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: Styles.mainText.copyWith(
-                    fontSize: fontSize,
+                    // fontSize: fontSize,
                     fontWeight: FontWeight.bold,
                     color: Styles.mainColor,
                   ),
@@ -59,7 +59,7 @@ class TopPassage extends StatelessWidget {
                 Text(
                   'Chapter ${passage.chapter}',
                   style: Styles.mainText.copyWith(
-                    fontSize: fontSize,
+                    // fontSize: fontSize,
                     color: Styles.bgColor,
                   ),
                 ),
@@ -67,7 +67,7 @@ class TopPassage extends StatelessWidget {
                 Text(
                   '${passage.verseStart}$verseEnd',
                   style: Styles.mainText.copyWith(
-                    fontSize: fontSize,
+                    // fontSize: fontSize,
                     color: Styles.bgColor,
                   ),
                 ),

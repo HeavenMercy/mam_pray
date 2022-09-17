@@ -16,7 +16,7 @@ class BasicPassage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double fontSize = 20;
+    // const double fontSize = 15;
 
     var verseEnd =
         passage.verseEnd > passage.verseStart ? ' to ${passage.verseEnd}' : '';
@@ -36,7 +36,7 @@ class BasicPassage extends StatelessWidget {
               Text(
                 passage.book,
                 style: Styles.mainText.copyWith(
-                  fontSize: fontSize,
+                  // fontSize: fontSize,
                   color: Styles.bgColor,
                 ),
               ),
@@ -45,7 +45,7 @@ class BasicPassage extends StatelessWidget {
                   Text(
                     'Chapter ${passage.chapter}: ${passage.verseStart}$verseEnd',
                     style: Styles.subText.copyWith(
-                      fontSize: fontSize / 1.2,
+                      // fontSize: fontSize / 1.2,
                       color: Styles.bgColor,
                     ),
                   ),

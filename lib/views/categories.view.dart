@@ -25,6 +25,13 @@ class CategoriesView extends StatefulWidget {
 
 class _CategoriesViewState extends State<CategoriesView> {
   var categoryFiltar = '';
+  var alreadyHasCategories = false;
+
+  @override
+  void initState() {
+    super.initState();
+    alreadyHasCategories = widget.passage?.categories.isNotEmpty ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +55,18 @@ class _CategoriesViewState extends State<CategoriesView> {
                         children: [
                           Text(
                             'Categories',
-                            style: Styles.mainText
-                                .copyWith(fontSize: 30, color: Styles.bgColor),
+                            style: Styles.mainText.copyWith(
+                              fontSize: 25,
+                              color: Styles.bgColor,
+                            ),
                           ),
                           Utils.addFixedSpace(5),
                           Text(
                             'You can add, rename, delete categories',
-                            style: Styles.subText
-                                .copyWith(fontSize: 15, color: Styles.bgColor),
+                            style: Styles.subText.copyWith(
+                              // fontSize: 15,
+                              color: Styles.bgColor,
+                            ),
                           ),
                         ],
                       ),
@@ -132,6 +143,11 @@ class _CategoriesViewState extends State<CategoriesView> {
                 Utils.addFlexibleSpace(),
                 CustomButton(
                   onPressed: () {
+                    if (alreadyHasCategories) {
+                      Navigator.of(context).pop();
+                      return;
+                    }
+
                     if (widget.passage != null) {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
