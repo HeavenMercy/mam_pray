@@ -3,6 +3,7 @@ import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/config/values.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/models/passage.model.dart';
+import 'package:mam_pray/services/bible_api.service.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/widgets/badge.widget.dart';
 import 'package:mam_pray/widgets/custom_button.widget.dart';
@@ -24,6 +25,7 @@ class PassageView extends StatefulWidget {
 
 class _PassageViewState extends State<PassageView> {
   var viewed = false;
+  var loading = false;
 
   var enableEdition = false;
   var showCategories = true;
@@ -46,6 +48,7 @@ class _PassageViewState extends State<PassageView> {
     double textPadding = 20;
 
     return PageContainer(
+      loading: loading,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -172,8 +175,8 @@ class _PassageViewState extends State<PassageView> {
               textAlign: TextAlign.center,
               type: CustomTextInputType.number,
               initialText: editedPassage!.verseEnd.toString(),
-              onChanged: (value) =>
-                  editedPassage!.verseEnd = int.tryParse(value) ?? 0,
+              onChanged: (value) => editedPassage!.verseEnd =
+                  int.tryParse(value) ?? editedPassage!.verseStart,
               hintText: 'to',
             ),
           ),
@@ -181,7 +184,8 @@ class _PassageViewState extends State<PassageView> {
       );
     }
 
-    var verseEnd = passage.verseEnd > 0 ? '-${passage.verseEnd}' : '';
+    var verseEnd =
+        passage.verseEnd > passage.verseStart ? '-${passage.verseEnd}' : '';
     var dt = passage.creationDate;
 
     return Column(
@@ -226,7 +230,21 @@ class _PassageViewState extends State<PassageView> {
           ),
           Utils.addFlexibleSpace(),
           CustomButton(
-            onPressed: () {},
+            onPressed: () {
+              if (editedPassage!.text.isNotEmpty) {
+                Utils.showSnackBar(
+                  context,
+                  msg: 'You will replace the current text',
+                  action: SnackBarAction(
+                    label: 'CONFIRM',
+                    onPressed: () => autoFillTextField(),
+                  ),
+                );
+                return;
+              }
+
+              autoFillTextField();
+            },
             icon: Icons.download,
             text: 'Autofill Text',
             color: Styles.bgColor,
@@ -250,10 +268,6 @@ class _PassageViewState extends State<PassageView> {
                   action: SnackBarAction(label: 'OK', onPressed: () {}),
                 );
                 return;
-              }
-
-              if (editedPassage!.verseStart == editedPassage!.verseEnd) {
-                editedPassage!.verseEnd = 0;
               }
 
               model.fillPassage(passage, editedPassage!);
@@ -295,6 +309,26 @@ class _PassageViewState extends State<PassageView> {
         ],
       );
     }
+  }
+
+  void autoFillTextField() async {
+    setState(() => loading = true);
+
+    var verses = (await BibleAPIService.instance.getPassageInfo(
+          editedPassage!.book,
+          editedPassage!.chapter,
+          editedPassage!.verseStart,
+          editedPassage!.verseEnd,
+        ))
+            ?.verses ??
+        [];
+
+    if (verses.isNotEmpty) {
+      editedPassage!.text =
+          verses.map((e) => e.text.trim().replaceAll('\n', '')).join('\n\n');
+    }
+
+    setState(() => loading = false);
   }
 
   Widget buildCategoriesView(

@@ -204,7 +204,6 @@ class AppModel extends ChangeNotifier {
 
   static Future<File> get _localFile async {
     final directory = await getTemporaryDirectory();
-    print('${directory.path} exists? ${await directory.exists()}...');
     return File('${directory.path}/mam_save.json');
   }
 
@@ -218,10 +217,8 @@ class AppModel extends ChangeNotifier {
 
       model = AppModel.fromJson(json.decode(str));
       done = true;
-      print('file successfully loaded...');
     } catch (exception) {
       model = AppModel(firstname: '', categories: [], passages: []);
-      print('default model created... $exception');
     }
 
     model.tryNormalizeCategories();
@@ -236,7 +233,6 @@ class AppModel extends ChangeNotifier {
 
       await file.writeAsString(str);
 
-      print('saving in ${file.uri} => $str');
       return true;
     } catch (exception) {
       return false;

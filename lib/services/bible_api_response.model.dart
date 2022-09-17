@@ -1,13 +1,7 @@
 import 'dart:convert';
 
-BibleApiResponse bibleApiResponseFromJson(String str) =>
-    BibleApiResponse.fromJson(json.decode(str));
-
-String bibleApiResponseToJson(BibleApiResponse data) =>
-    json.encode(data.toJson());
-
-class BibleApiResponse {
-  BibleApiResponse({
+class BibleAPIResponse {
+  BibleAPIResponse({
     required this.reference,
     required this.verses,
     required this.text,
@@ -23,7 +17,7 @@ class BibleApiResponse {
   final String translationName;
   final String translationNote;
 
-  BibleApiResponse copyWith({
+  BibleAPIResponse copyWith({
     String? reference,
     List<Verse>? verses,
     String? text,
@@ -31,7 +25,7 @@ class BibleApiResponse {
     String? translationName,
     String? translationNote,
   }) =>
-      BibleApiResponse(
+      BibleAPIResponse(
         reference: reference ?? this.reference,
         verses: verses ?? this.verses,
         text: text ?? this.text,
@@ -40,8 +34,8 @@ class BibleApiResponse {
         translationNote: translationNote ?? this.translationNote,
       );
 
-  factory BibleApiResponse.fromJson(Map<String, dynamic> json) =>
-      BibleApiResponse(
+  factory BibleAPIResponse.fromJson(Map<String, dynamic> json) =>
+      BibleAPIResponse(
         reference: json["reference"],
         verses: List<Verse>.from(json["verses"].map((x) => Verse.fromJson(x))),
         text: json["text"],
@@ -58,6 +52,11 @@ class BibleApiResponse {
         "translation_name": translationName,
         "translation_note": translationNote,
       };
+
+  static BibleAPIResponse fromRawJson(String str) =>
+      BibleAPIResponse.fromJson(json.decode(str));
+
+  static String toRawJson(BibleAPIResponse data) => json.encode(data.toJson());
 }
 
 class Verse {

@@ -18,7 +18,8 @@ class TopPassage extends StatelessWidget {
     const Size size = Size(180, 150);
     const double fontSize = 20;
 
-    var verseEnd = passage.verseEnd > 0 ? '-${passage.verseEnd}' : '';
+    var verseEnd =
+        passage.verseEnd > passage.verseStart ? '-${passage.verseEnd}' : '';
 
     return GestureDetector(
       onTap: () => onTap.call(context, passage),

@@ -18,7 +18,8 @@ class BasicPassage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double fontSize = 20;
 
-    var verseEnd = passage.verseEnd > 0 ? ' to ${passage.verseEnd}' : '';
+    var verseEnd =
+        passage.verseEnd > passage.verseStart ? ' to ${passage.verseEnd}' : '';
 
     return GestureDetector(
       onTap: () => onTap.call(context, passage),
@@ -39,7 +40,6 @@ class BasicPassage extends StatelessWidget {
                   color: Styles.bgColor,
                 ),
               ),
-              Utils.addFixedSpace(10),
               Row(
                 children: [
                   Text(
