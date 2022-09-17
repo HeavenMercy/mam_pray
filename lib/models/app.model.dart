@@ -1,5 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:mam_pray/config/values.config.dart';
@@ -21,21 +22,17 @@ class AppModel extends ChangeNotifier {
   String firstname;
   int lastCategoryId;
   int lastPassageId;
-  final List<PassageCategory> categories;
-  final List<Passage> passages;
+  List<PassageCategory> categories;
+  List<Passage> passages;
 
-  AppModel copyWith({
-    String? firstname,
-    int? lastCategoryId,
-    List<PassageCategory>? categories,
-    List<Passage>? passages,
-  }) =>
-      AppModel(
-        firstname: firstname ?? this.firstname,
-        lastCategoryId: lastCategoryId ?? this.lastCategoryId,
-        categories: categories ?? this.categories,
-        passages: passages ?? this.passages,
-      );
+  void fillFrom(AppModel other, {bool listen = true}) {
+    firstname = other.firstname;
+    lastCategoryId = other.lastCategoryId;
+    categories = other.categories.where((element) => true).toList();
+    passages = other.passages.where((element) => true).toList();
+
+    if (listen) notifyListeners();
+  }
 
   factory AppModel.fromJson(Map<String, dynamic> json) => AppModel(
         firstname: json["firstname"],
@@ -66,6 +63,20 @@ class AppModel extends ChangeNotifier {
         orElse: () => PassageCategory(id: -1, name: ''));
   }
 
+  Iterable<PassageCategory> getActiveCategories({bool sortByName = false}) {
+    var ret = <PassageCategory>[];
+
+    for (var passage in passages) {
+      for (var categoryId in passage.categories) {
+        var category = getCategory(categoryId);
+        if ((category.id != -1) && !ret.contains(category)) ret.add(category);
+      }
+    }
+
+    if (sortByName) ret.sort((p1, p2) => p1.name.compareTo(p2.name));
+    return ret;
+  }
+
   void addCategory(String name, {bool canDelete = true}) {
     var nextCategoryid = lastCategoryId + 1;
     var category =
@@ -74,7 +85,9 @@ class AppModel extends ChangeNotifier {
     if (!categoryExists(category.name)) {
       lastCategoryId = nextCategoryid;
       categories.add(category);
+
       notifyListeners();
+      save();
     }
   }
 
@@ -84,17 +97,24 @@ class AppModel extends ChangeNotifier {
     if (category.id != -1) {
       category.name = name;
       notifyListeners();
+      save();
     }
   }
 
   void deleteCategory(int id) {
-    passages.removeWhere((passage) => passage.categories.contains(id));
     categories.removeWhere((category) => (category.id == id));
+
+    for (var i = passages.length - 1; i >= 0; --i) {
+      passages[i].categories.remove(id);
+      if (passages[i].categories.isEmpty) passages.removeAt(i);
+    }
+
     notifyListeners();
+    save();
   }
 
   void tryNormalizeCategories() {
-    for (var category in Values.basicCategories) {
+    for (var category in Values.starterCategories) {
       addCategory(category, canDelete: false);
     }
   }
@@ -118,13 +138,14 @@ class AppModel extends ChangeNotifier {
       text: '',
       verseStart: 1,
       verseEnd: 1,
-      viewCount: 0,
+      viewCount: 1,
     );
   }
 
   void fillPassage(Passage passage, Passage other) {
     passage.fillFrom(other);
     notifyListeners();
+    save();
   }
 
   int getNextPassageId() => ++lastPassageId;
@@ -158,148 +179,54 @@ class AppModel extends ChangeNotifier {
     passage.id = lastPassageId + 1;
     passage.creationDate = DateTime.now();
     passages.add(passage);
+
     notifyListeners();
+    save();
 
     return true;
   }
 
   void deletePassage(int id) {
     passages.removeWhere((passage) => passage.id == id);
+
     notifyListeners();
+    save();
   }
 
   void viewPassage(Passage passage) {
     passage.viewCount += 1;
+
     notifyListeners();
+    save();
   }
 
   // FILE MANAGEMENT
 
   static Future<File> get _localFile async {
     final directory = await getTemporaryDirectory();
-    if (!(await directory.exists())) await directory.create(recursive: true);
-    print('loading $directory...');
+    print('${directory.path} exists? ${await directory.exists()}...');
     return File('${directory.path}/mam_save.json');
   }
 
-  static Future<AppModel> load() async {
+  Future<bool> load() async {
     AppModel model;
+    var done = false;
 
     try {
       var file = await _localFile;
       var str = await file.readAsString();
 
       model = AppModel.fromJson(json.decode(str));
-      print('loaded $model');
+      done = true;
+      print('file successfully loaded...');
     } catch (exception) {
-      model = AppModel(firstname: '', categories: [], passages: <Passage>[
-        Passage(
-            id: 1,
-            book: 'book (with text)',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 2,
-            text:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris ultrices eros in cursus. Eget mi proin sed libero enim sed faucibus turpis. Purus sit amet luctus venenatis lectus magna. Faucibus nisl tincidunt eget nullam non nisi est. Phasellus vestibulum lorem sed risus. Condimentum id venenatis a condimentum vitae sapien pellentesque habitant morbi. Amet nisl purus in mollis nunc sed. Dis parturient montes nascetur ridiculus. Nec tincidunt praesent semper feugiat nibh sed. Et molestie ac feugiat sed. Nunc consequat interdum varius sit amet mattis vulputate enim.\r\n\r\nGravida cum sociis natoque penatibus et magnis. Arcu dui vivamus arcu felis bibendum ut tristique et egestas. Enim nec dui nunc mattis. Dui nunc mattis enim ut. In ante metus dictum at tempor commodo ullamcorper a. Eget duis at tellus at urna. Sit amet nulla facilisi morbi tempus. Sagittis orci a scelerisque purus semper. Vitae sapien pellentesque habitant morbi tristique senectus et netus. Amet facilisis magna etiam tempor. Vitae tortor condimentum lacinia quis vel eros. Orci a scelerisque purus semper eget duis at. Et tortor at risus viverra adipiscing at in tellus integer. Cras ornare arcu dui vivamus arcu felis bibendum ut. Placerat orci nulla pellentesque dignissim enim sit amet.\r\n\r\nOrci a scelerisque purus semper eget duis at. Risus pretium quam vulputate dignissim suspendisse in est ante in. Magna sit amet purus gravida quis blandit. Posuere ac ut consequat semper viverra nam. Vel risus commodo viverra maecenas accumsan. Diam sit amet nisl suscipit adipiscing. Faucibus interdum posuere lorem ipsum dolor sit amet. Aliquet nibh praesent tristique magna sit amet. Netus et malesuada fames ac turpis egestas sed. Cursus eget nunc scelerisque viverra mauris in aliquam sem. Quam vulputate dignissim suspendisse in est ante in nibh mauris. Facilisis mauris sit amet massa vitae tortor condimentum lacinia. Tortor dignissim convallis aenean et. Mi quis hendrerit dolor magna. Duis convallis convallis tellus id interdum velit. Proin sed libero enim sed faucibus turpis in. Libero volutpat sed cras ornare. Morbi leo urna molestie at elementum eu.\r\n\r\nMi in nulla posuere sollicitudin aliquam. Egestas sed tempus urna et pharetra pharetra massa massa. Orci eu lobortis elementum nibh tellus molestie. Ac turpis egestas maecenas pharetra convallis posuere morbi. Nullam vehicula ipsum a arcu cursus. Id donec ultrices tincidunt arcu non. Aliquet sagittis id consectetur purus. Et malesuada fames ac turpis egestas integer. Lobortis feugiat vivamus at augue. In eu mi bibendum neque egestas congue quisque egestas. Nulla aliquet porttitor lacus luctus accumsan tortor. Enim ut tellus elementum sagittis vitae et leo. Ut venenatis tellus in metus vulputate. Eget dolor morbi non arcu risus.\r\n\r\nEst ullamcorper eget nulla facilisi etiam dignissim diam. Ornare arcu odio ut sem. Laoreet sit amet cursus sit amet dictum. Elit sed vulputate mi sit amet. Gravida neque convallis a cras semper auctor neque. Massa eget egestas purus viverra accumsan in. Massa eget egestas purus viverra accumsan. Dolor sit amet consectetur adipiscing. Tincidunt lobortis feugiat vivamus at augue eget arcu. Eu sem integer vitae justo eget magna fermentum iaculis eu. Vestibulum lorem sed risus ultricies tristique nulla aliquet enim. Ullamcorper eget nulla facilisi etiam dignissim diam quis. Consectetur lorem donec massa sapien faucibus et. Leo vel fringilla est ullamcorper. Turpis egestas maecenas pharetra convallis posuere morbi. Mauris sit amet massa vitae. Risus nec feugiat in fermentum posuere urna nec. Varius duis at consectetur lorem. Dolor sit amet consectetur adipiscing elit pellentesque.",
-            categories: [1, 2, 8, 9, 3, 5, 4],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 2,
-            book: 'Epitre Selon St Paul',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 8,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 3,
-            book: 'Epitre Selon St Paul',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 8,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 4,
-            book: 'Epitre selon st paul',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 8,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 5,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 5,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 6,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 1,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 7,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 6,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 8,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 22,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 9,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 12,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-        Passage(
-            id: 10,
-            book: 'book',
-            chapter: 10,
-            verseStart: 1,
-            verseEnd: 5,
-            viewCount: 9,
-            text: "",
-            categories: [1, 2, 8],
-            creationDate: DateTime.now()),
-      ]);
-      print('default model created...');
+      model = AppModel(firstname: '', categories: [], passages: []);
+      print('default model created... $exception');
     }
 
     model.tryNormalizeCategories();
-    return model;
+    fillFrom(model);
+    return done;
   }
 
   Future<bool> save() async {

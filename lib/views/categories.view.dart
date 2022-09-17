@@ -102,11 +102,14 @@ class _CategoriesViewState extends State<CategoriesView> {
               child: ListView.builder(
                 itemCount: result.length,
                 itemBuilder: (context, index) {
+                  var id = result[index].id;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CategoryView(
+                      key: Key(result[index].id.toString()),
+                      selected:
+                          widget.passage?.categories.contains(id) ?? false,
                       onTap: (selected) {
-                        var id = result[index].id;
                         if (selected) {
                           widget.passage?.categories.add(id);
                         } else {

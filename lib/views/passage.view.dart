@@ -234,8 +234,29 @@ class _PassageViewState extends State<PassageView> {
           Utils.addFlexibleSpace(),
           CustomButton(
             onPressed: () {
-              model.fillPassage(passage, editedPassage!);
+              if (editedPassage!.book.isEmpty) {
+                Utils.showSnackBar(
+                  context,
+                  msg: 'You must set the Book',
+                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                );
+                return;
+              }
 
+              if (editedPassage!.verseStart > editedPassage!.verseEnd) {
+                Utils.showSnackBar(
+                  context,
+                  msg: 'starting verse is greater than ending verse',
+                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                );
+                return;
+              }
+
+              if (editedPassage!.verseStart == editedPassage!.verseEnd) {
+                editedPassage!.verseEnd = 0;
+              }
+
+              model.fillPassage(passage, editedPassage!);
               if (widget.forCreation) model.addPassage(passage);
 
               setEdition(false);

@@ -18,6 +18,8 @@ class TopPassage extends StatelessWidget {
     const Size size = Size(180, 150);
     const double fontSize = 20;
 
+    var verseEnd = passage.verseEnd > 0 ? '-${passage.verseEnd}' : '';
+
     return GestureDetector(
       onTap: () => onTap.call(context, passage),
       child: Card(
@@ -62,7 +64,7 @@ class TopPassage extends StatelessWidget {
                 ),
                 Utils.addFlexibleSpace(),
                 Text(
-                  '${passage.verseStart}:${passage.verseEnd}',
+                  '${passage.verseStart}$verseEnd',
                   style: Styles.mainText.copyWith(
                     fontSize: fontSize,
                     color: Styles.bgColor,

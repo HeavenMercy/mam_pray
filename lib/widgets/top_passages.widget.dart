@@ -42,7 +42,6 @@ class TopPassages extends StatelessWidget {
             color: Styles.secColor,
           ),
         ),
-        Utils.addFixedSpace(20),
       ],
     );
   }

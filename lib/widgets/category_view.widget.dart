@@ -11,11 +11,13 @@ class CategoryView extends StatefulWidget {
   const CategoryView({
     Key? key,
     required this.categoryId,
+    required this.selected,
     required this.state,
     required this.onTap,
   }) : super(key: key);
 
   final int categoryId;
+  final bool selected;
   final CategoryViewState state;
   final void Function(bool selected) onTap;
 
@@ -27,6 +29,12 @@ class _CategoryViewState extends State<CategoryView> {
   var state = CategoryViewState.none;
   var name = '';
   var selected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.selected;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,6 @@ class _CategoryViewState extends State<CategoryView> {
 
     return Card(
       color: selected ? Styles.mainColor : Styles.secColor,
-      shadowColor: selected ? Styles.mainColor : Styles.secColor,
       elevation: 5,
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -85,7 +92,7 @@ class _CategoryViewState extends State<CategoryView> {
           IconButton(
             onPressed: () => Utils.showSnackBar(
               context,
-              msg: 'You will delete the category and its passages',
+              msg: 'You are about to delete the category',
               action: SnackBarAction(
                 label: 'CONFIRM',
                 onPressed: () => model.deleteCategory(category.id),
@@ -145,7 +152,13 @@ class _CategoryViewState extends State<CategoryView> {
       }),
       child: Row(
         children: [
-          Expanded(child: Text(category.name)),
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 15.0),
+              child: Text(category.name),
+            ),
+          ),
           Icon(selected ? Icons.close : Icons.check),
         ],
       ),

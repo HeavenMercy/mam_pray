@@ -18,6 +18,8 @@ class BasicPassage extends StatelessWidget {
   Widget build(BuildContext context) {
     const double fontSize = 20;
 
+    var verseEnd = passage.verseEnd > 0 ? ' to ${passage.verseEnd}' : '';
+
     return GestureDetector(
       onTap: () => onTap.call(context, passage),
       child: Card(
@@ -28,31 +30,20 @@ class BasicPassage extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    passage.book,
-                    style: Styles.mainText.copyWith(
-                      fontSize: fontSize,
-                      color: Styles.bgColor,
-                    ),
-                  ),
-                  Utils.addFlexibleSpace(),
-                  Text(
-                    '${passage.verseStart}:${passage.verseEnd}',
-                    style: Styles.mainText.copyWith(
-                      fontSize: fontSize,
-                      color: Styles.bgColor,
-                    ),
-                  ),
-                ],
+              Text(
+                passage.book,
+                style: Styles.mainText.copyWith(
+                  fontSize: fontSize,
+                  color: Styles.bgColor,
+                ),
               ),
               Utils.addFixedSpace(10),
               Row(
                 children: [
                   Text(
-                    'Chapter ${passage.chapter}',
+                    'Chapter ${passage.chapter}: ${passage.verseStart}$verseEnd',
                     style: Styles.subText.copyWith(
                       fontSize: fontSize / 1.2,
                       color: Styles.bgColor,

@@ -12,15 +12,27 @@ import 'package:mam_pray/widgets/page_header.widget.dart';
 import 'package:mam_pray/widgets/top_passages.widget.dart';
 import 'package:provider/provider.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  static const categoryAll = 'All';
+
+  var welcomteText = Utils.getRandomsInvite();
+  var selectedCategory = -1;
 
   @override
   Widget build(BuildContext context) {
     var model = context.watch<AppModel>();
 
     var topPassages = model.getTopPassages();
-    var passages = model.getPassages();
+    var passages = model.getPassages().where((passage) =>
+        ((selectedCategory == -1) ||
+            passage.categories.contains(selectedCategory)));
 
     return PageContainer(
       child: Column(
@@ -37,7 +49,7 @@ class HomeView extends StatelessWidget {
                 ),
                 Utils.addFixedSpace(5),
                 Text(
-                  Utils.getRandomsInvite(),
+                  welcomteText,
                   style: Styles.subText.copyWith(
                     fontSize: 15,
                     color: Styles.bgColor,
@@ -73,6 +85,7 @@ class HomeView extends StatelessWidget {
                         if (topPassages.isNotEmpty)
                           TopPassages(
                               passages: topPassages, onTap: onPassageTap),
+                        buildCategoryFilter(context),
                         ...passages.map((passage) {
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
@@ -86,8 +99,9 @@ class HomeView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
-                          Icons.cancel,
+                          Icons.note,
                           color: Styles.secColor,
+                          size: 40,
                         ),
                         Utils.addFixedSpace(10),
                         const Text(
@@ -118,9 +132,53 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  DropdownMenuItem<int> buildDropdownItem(int value, String text) {
+    // var color = (selectedCategory == value ? Styles.secColor : Styles.bgColor);
+    return DropdownMenuItem(
+      value: value,
+      child: Text(
+        text,
+        style: Styles.mainText.copyWith(
+          color: Styles.bgColor,
+          fontWeight:
+              (selectedCategory == value ? FontWeight.bold : FontWeight.normal),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCategoryFilter(BuildContext context) {
+    var categories = context
+        .read<AppModel>()
+        .getActiveCategories(sortByName: true)
+        .map((e) => buildDropdownItem(e.id, e.name));
+
+    return Container(
+      width: 200,
+      height: 50,
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 80,
+        vertical: 15,
+      ),
+      decoration: BoxDecoration(
+        color: Styles.secColor,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: DropdownButton<int>(
+        icon: const Icon(Icons.filter_alt_sharp, size: 20),
+        isExpanded: true,
+        items: [buildDropdownItem(-1, categoryAll), ...categories],
+        value: selectedCategory,
+        onChanged: (int? value) => setState(() => selectedCategory = value!),
+      ),
+    );
+  }
+
   void onPassageTap(BuildContext context, Passage passage) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => PassageView(passage: passage),
     ));
+    context.read<AppModel>().viewPassage(passage);
   }
 }

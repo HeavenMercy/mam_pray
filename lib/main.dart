@@ -5,34 +5,52 @@ import 'package:mam_pray/views/home.view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(FutureBuilder(
-    future: AppModel.load(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      }
+  var model = AppModel(firstname: '', categories: [], passages: []);
 
-      return ChangeNotifierProvider(
-        create: (context) => (snapshot.data as AppModel),
-        builder: (context, child) {
-          return const MyApp();
-        },
-      );
+  runApp(ChangeNotifierProvider(
+    create: (context) => model,
+    builder: (context, child) {
+      return MyApp(model: model);
     },
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key, this.model}) : super(key: key);
+
+  final AppModel? model;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.model != null) {
+      widget.model!.load().then((_) => setState(() => loading = false));
+    } else {
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var model = context.read<AppModel>();
+    if (loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return MaterialApp(
       title: 'Flutter Demo',
-      home:
-          (model.firstname.isEmpty ? const FirstTimeView() : const HomeView()),
+      home: (widget.model?.firstname.isEmpty ?? true
+          ? const FirstTimeView()
+          : const HomeView()),
     );
   }
 }

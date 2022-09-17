@@ -1,10 +1,13 @@
 abstract class Values {
-  /// nombre minimum de passage pour afficher les tops
+  /// minimum number of passages to show the top block
   static int minCountForTop = 6;
   static int topPassageCount = 3;
+
+  /// number of visible categories in a passage view
   static int maxCategoriesCount = 4;
 
-  static const basicCategories = [
+  /// must have categories (undeletable)
+  static const starterCategories = [
     'Wedding',
     'Praise',
     'Thanksgiving and Joy',
