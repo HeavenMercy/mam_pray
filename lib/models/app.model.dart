@@ -126,6 +126,12 @@ class AppModel extends ChangeNotifier {
         .toList();
   }
 
+  int countPassages(int categoryId) {
+    return passages
+        .where((passage) => passage.categories.contains(categoryId))
+        .length;
+  }
+
   // PASSAGE MANAGEMENT
 
   static Passage getEmptyPassage() {

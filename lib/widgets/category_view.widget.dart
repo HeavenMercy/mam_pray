@@ -70,7 +70,7 @@ class _CategoryViewState extends State<CategoryView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15.0),
             child: Text(
-              category.name,
+              '${category.name} (${model.countPassages(category.id)})',
               style: Styles.mainText.copyWith(
                 color: Styles.bgColor,
                 // fontSize: 18,
