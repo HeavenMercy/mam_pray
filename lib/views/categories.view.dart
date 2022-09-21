@@ -25,12 +25,15 @@ class CategoriesView extends StatefulWidget {
 
 class _CategoriesViewState extends State<CategoriesView> {
   var categoryFiltar = '';
+  var selectedCategories = <int>[];
   var alreadyHasCategories = false;
 
   @override
   void initState() {
     super.initState();
-    alreadyHasCategories = widget.passage?.categories.isNotEmpty ?? false;
+
+    selectedCategories.addAll(widget.passage?.categories ?? <int>[]);
+    alreadyHasCategories = selectedCategories.isNotEmpty;
   }
 
   @override
@@ -118,13 +121,12 @@ class _CategoriesViewState extends State<CategoriesView> {
                     padding: const EdgeInsets.all(8.0),
                     child: CategoryView(
                       key: Key(result[index].id.toString()),
-                      selected:
-                          widget.passage?.categories.contains(id) ?? false,
+                      selected: selectedCategories.contains(id),
                       onTap: (selected) {
                         if (selected) {
-                          widget.passage?.categories.add(id);
+                          selectedCategories.add(id);
                         } else {
-                          widget.passage?.categories.remove(id);
+                          selectedCategories.remove(id);
                         }
                       },
                       categoryId: result[index].id,
@@ -143,6 +145,18 @@ class _CategoriesViewState extends State<CategoriesView> {
                 Utils.addFlexibleSpace(),
                 CustomButton(
                   onPressed: () {
+                    if (selectedCategories.isEmpty) {
+                      Utils.showSnackBar(context,
+                          msg: 'You must select at least one category',
+                          action: SnackBarAction(
+                            label: 'OK',
+                            onPressed: () {},
+                          ));
+                      return;
+                    }
+
+                    widget.passage?.categories = selectedCategories;
+
                     if (alreadyHasCategories) {
                       Navigator.of(context).pop();
                       return;

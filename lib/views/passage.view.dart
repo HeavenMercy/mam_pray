@@ -80,7 +80,7 @@ class _PassageViewState extends State<PassageView> {
                       flex: 8,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.blueGrey.shade700),
+                            backgroundColor: Colors.blueGrey.shade700),
                         onPressed: () => setState(() {
                           showCategories = !showCategories;
                         }),

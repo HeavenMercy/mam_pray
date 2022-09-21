@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
       padding: margin,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           padding: padding,
         ),
         onLongPress: (forLongPress ? onPressed : null),
