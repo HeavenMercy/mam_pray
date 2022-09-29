@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 Utils.addFixedSpace(10),
                 Text(
-                  'Welcome ${model.firstname},',
+                  'Welcome ${model.getFirstName()},',
                   style: Styles.mainText
                       .copyWith(fontSize: 25, color: Styles.bgColor),
                 ),

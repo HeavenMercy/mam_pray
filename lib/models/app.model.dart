@@ -19,6 +19,10 @@ class AppModel extends ChangeNotifier {
     this.lastPassageId = -1,
   });
 
+  static AppModel empty() {
+    return AppModel(firstname: '', categories: [], passages: []);
+  }
+
   String firstname;
   int lastCategoryId;
   int lastPassageId;
@@ -50,6 +54,19 @@ class AppModel extends ChangeNotifier {
         "passages": List<dynamic>.from(passages.map((x) => x.toJson())),
       };
 
+  // FIRST NAME MANAGEMENT
+
+  bool hasFirstName() => firstname.isNotEmpty;
+
+  bool setFirstName(String newValue) {
+    if (newValue.isEmpty) return false;
+
+    firstname = newValue.trim();
+    return true;
+  }
+
+  String getFirstName() => firstname;
+
   // CATEGORY MANAGEMENT
 
   bool categoryExists(String name) {
@@ -79,8 +96,8 @@ class AppModel extends ChangeNotifier {
 
   void addCategory(String name, {bool canDelete = true}) {
     var nextCategoryid = lastCategoryId + 1;
-    var category =
-        PassageCategory(id: nextCategoryid, name: name, editable: canDelete);
+    var category = PassageCategory(
+        id: nextCategoryid, name: name.trim(), editable: canDelete);
 
     if (!categoryExists(category.name)) {
       lastCategoryId = nextCategoryid;
@@ -122,7 +139,7 @@ class AppModel extends ChangeNotifier {
   List<PassageCategory> findCategories(String name) {
     return categories
         .where((category) =>
-            category.name.toLowerCase().contains(name.toLowerCase()))
+            category.name.toLowerCase().contains(name.toLowerCase().trim()))
         .toList();
   }
 

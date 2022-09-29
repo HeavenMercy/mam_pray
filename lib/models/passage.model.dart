@@ -24,12 +24,12 @@ class Passage {
   void fillFrom(Passage other) {
     if (id != other.id) return;
 
-    book = other.book;
+    book = other.book.trim();
     chapter = other.chapter;
     verseStart = other.verseStart;
     verseEnd = other.verseEnd;
     viewCount = other.viewCount;
-    text = other.text;
+    text = other.text.trim();
     categories = other.categories.where((_) => true).toList();
     creationDate = other.creationDate;
   }

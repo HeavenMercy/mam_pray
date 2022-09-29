@@ -5,7 +5,7 @@ import 'package:mam_pray/views/home.view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  var model = AppModel(firstname: '', categories: [], passages: []);
+  var model = AppModel.empty();
 
   runApp(ChangeNotifierProvider(
     create: (context) => model,
@@ -48,9 +48,9 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: 'Flutter Demo',
-      home: (widget.model?.firstname.isEmpty ?? true
-          ? const FirstTimeView()
-          : const HomeView()),
+      home: (widget.model?.hasFirstName() ?? false
+          ? const HomeView()
+          : const FirstTimeView()),
     );
   }
 }

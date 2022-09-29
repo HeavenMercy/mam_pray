@@ -61,9 +61,9 @@ class _FirstTimeViewState extends State<FirstTimeView> {
   void onNextPressed(BuildContext context) {
     var model = Provider.of<AppModel>(context, listen: false);
 
-    if (fname.isEmpty) {
+    if (!model.setFirstName(fname)) {
       Utils.showSnackBar(context,
-          msg: 'no firstname given',
+          msg: 'wrong or no firstname given',
           icon: Icons.person_off,
           action: SnackBarAction(label: 'OK', onPressed: () {}));
       return;
@@ -73,7 +73,6 @@ class _FirstTimeViewState extends State<FirstTimeView> {
       loading = true;
     });
 
-    model.firstname = fname;
     model.save().then((done) {
       if (done) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
