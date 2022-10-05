@@ -12,9 +12,11 @@ abstract class Utils {
             icon,
             color: Colors.white,
           ),
-        Text(
-          msg,
-          style: const TextStyle(color: Colors.white),
+        Flexible(
+          child: Text(
+            msg,
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       ]),
       action: action,

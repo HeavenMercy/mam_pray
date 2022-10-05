@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 import 'package:mam_pray/config/values.config.dart';
@@ -64,12 +66,7 @@ class _PassageViewState extends State<PassageView> {
                   Row(
                     children: [
                       Expanded(
-                        child: buildCategoriesView(
-                            context,
-                            widget.passage,
-                            enableEdition
-                                ? widget.passage.categories.length
-                                : Values.maxCategoriesCount),
+                        child: buildCategoriesView(context, widget.passage),
                       ),
                     ],
                   ),
@@ -129,7 +126,11 @@ class _PassageViewState extends State<PassageView> {
                       : Text(
                           widget.passage.text,
                           textAlign: TextAlign.justify,
-                          // style: const TextStyle(fontSize: 20),
+                          style: Styles.subText.copyWith(
+                            color: Colors.black,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 16,
+                          ),
                         )),
                 ),
               ),
@@ -226,8 +227,10 @@ class _PassageViewState extends State<PassageView> {
 
     if (enableEdition) {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomButton(
+            margin: const EdgeInsets.all(5),
             onPressed: () {
               if (!widget.forCreation) {
                 return setEdition(false);
@@ -246,8 +249,9 @@ class _PassageViewState extends State<PassageView> {
             text: 'Cancel',
             color: Colors.grey,
           ),
-          Utils.addFlexibleSpace(),
+          // Utils.addFlexibleSpace(),
           CustomButton(
+            margin: const EdgeInsets.all(5),
             onPressed: () {
               if (editedPassage!.text.isNotEmpty) {
                 Utils.showSnackBar(
@@ -267,8 +271,9 @@ class _PassageViewState extends State<PassageView> {
             text: 'Autofill Text',
             color: Styles.bgColor,
           ),
-          Utils.addFlexibleSpace(),
+          // Utils.addFlexibleSpace(),
           CustomButton(
+            margin: const EdgeInsets.all(5),
             onPressed: () {
               if (editedPassage!.book.isEmpty) {
                 Utils.showSnackBar(
@@ -301,8 +306,10 @@ class _PassageViewState extends State<PassageView> {
       );
     } else {
       return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomButton(
+            margin: const EdgeInsets.all(5),
             onPressed: () => Utils.showSnackBar(
               context,
               msg: 'You will delete the passage',
@@ -318,8 +325,9 @@ class _PassageViewState extends State<PassageView> {
             text: 'Delete',
             color: Colors.red,
           ),
-          Utils.addFlexibleSpace(),
+          // Utils.addFlexibleSpace(),
           CustomButton(
+            margin: const EdgeInsets.all(5),
             onPressed: () => setEdition(true),
             icon: Icons.edit,
             text: 'Edit',
@@ -349,12 +357,16 @@ class _PassageViewState extends State<PassageView> {
     setState(() => loading = false);
   }
 
-  Widget buildCategoriesView(
-      BuildContext context, Passage passage, int maxCount) {
+  Widget buildCategoriesView(BuildContext context, Passage passage) {
     var model = context.read<AppModel>();
 
     var remaining = passage.categories.length;
-    var leftToShow = maxCount;
+    var leftToShow = max(
+      widget.passage.categories.length,
+      (enableEdition
+          ? widget.passage.categories.length
+          : Values.maxCategoriesCount),
+    );
 
     List<Widget> badges = [];
     var categories = (enableEdition ? editedPassage! : passage).categories;
@@ -365,7 +377,7 @@ class _PassageViewState extends State<PassageView> {
 
       var canShow = ((leftToShow > 0) || (remaining == 1));
       badges.add(Badge(
-        onDelete: ((enableEdition && canShow)
+        onDelete: ((enableEdition && canShow && (categories.length > 1))
             ? () => Utils.showSnackBar(
                   context,
                   msg: 'You will remove the passage from the category',

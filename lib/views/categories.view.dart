@@ -84,7 +84,7 @@ class _CategoriesViewState extends State<CategoriesView> {
                         padding: const EdgeInsets.all(10.0),
                         child: CustomTextInput(
                           prefixIcon: const Icon(Icons.search),
-                          hintText: 'search...',
+                          hintText: 'search or create new...',
                           canClear: true,
                           onChanged: (value) {
                             setState(() {
