@@ -1,4 +1,6 @@
 abstract class Values {
+  static String appName = 'Mam Pray';
+
   /// minimum number of passages to show the top block
   static int minCountForTop = 10;
   static int topPassageCount = 3;

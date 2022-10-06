@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
+import 'package:mam_pray/config/values.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/utils.dart';
 import 'package:mam_pray/views/home.view.dart';
@@ -29,7 +30,7 @@ class _FirstTimeViewState extends State<FirstTimeView> {
           children: [
             Utils.addFixedSpace(50),
             Text(
-              'Mam Pray',
+              Values.appName,
               style: Styles.mainText.copyWith(fontSize: 50),
             ),
             Utils.addFixedSpace(10),
@@ -62,10 +63,10 @@ class _FirstTimeViewState extends State<FirstTimeView> {
     var model = Provider.of<AppModel>(context, listen: false);
 
     if (!model.setFirstName(fname)) {
-      Utils.showSnackBar(context,
+      Utils.showAlert(context,
           msg: 'wrong or no firstname given',
           icon: Icons.person_off,
-          action: SnackBarAction(label: 'OK', onPressed: () {}));
+          action: AlertAction(label: 'OK', onPressed: () {}));
       return;
     }
 
@@ -84,10 +85,10 @@ class _FirstTimeViewState extends State<FirstTimeView> {
       setState(() {
         loading = false;
       });
-      Utils.showSnackBar(context,
+      Utils.showAlert(context,
           msg: 'an error occured while saving',
           icon: Icons.error,
-          action: SnackBarAction(label: 'ok', onPressed: () {}));
+          action: AlertAction(label: 'ok', onPressed: () {}));
     });
   }
 }

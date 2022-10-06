@@ -1,10 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mam_pray/config/values.config.dart';
 
 abstract class Utils {
-  static void showSnackBar(BuildContext context,
-      {IconData? icon, required String msg, SnackBarAction? action}) {
+  static void showSnackbar(BuildContext context,
+      {IconData? icon, required String msg, required AlertAction action}) {
     var snackbar = SnackBar(
       content: Row(children: [
         if (icon != null)
@@ -19,10 +20,30 @@ abstract class Utils {
           ),
         ),
       ]),
-      action: action,
+      action: SnackBarAction(
+          label: action.label, onPressed: action.onPressed ?? () {}),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  static void showAlert(BuildContext context,
+      {IconData? icon, required String msg, required AlertAction action}) {
+    var alert = AlertDialog(
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (icon != null) Icon(icon),
+          Text(Values.appName),
+        ],
+      ),
+      content: Text(msg, maxLines: null, softWrap: true),
+      actions: [
+        TextButton(onPressed: action.onPressed, child: Text(action.label))
+      ],
+    );
+
+    showDialog(context: context, builder: (context) => alert);
   }
 
   static bool isSameString(String str1, String str2) {
@@ -48,6 +69,13 @@ abstract class Utils {
     var index = Random().nextInt(inviteMessages.length);
     return inviteMessages[index];
   }
+}
+
+class AlertAction {
+  AlertAction({required this.label, this.onPressed});
+
+  final String label;
+  final VoidCallback? onPressed;
 }
 
 extension StringEnhanced on String {

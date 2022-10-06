@@ -90,10 +90,10 @@ class _CategoryViewState extends State<CategoryView> {
           ),
         if (category.editable)
           IconButton(
-            onPressed: () => Utils.showSnackBar(
+            onPressed: () => Utils.showAlert(
               context,
               msg: 'You are about to delete the category',
-              action: SnackBarAction(
+              action: AlertAction(
                 label: 'CONFIRM',
                 onPressed: () => model.deleteCategory(category.id),
               ),

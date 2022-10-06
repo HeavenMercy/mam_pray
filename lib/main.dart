@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mam_pray/config/styles.config.dart';
+import 'package:mam_pray/config/values.config.dart';
 import 'package:mam_pray/models/app.model.dart';
 import 'package:mam_pray/views/first_time.view.dart';
 import 'package:mam_pray/views/home.view.dart';
@@ -41,13 +43,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        color: Styles.bgColor,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     }
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: Values.appName,
       home: (widget.model?.hasFirstName() ?? false
           ? const HomeView()
           : const FirstTimeView()),

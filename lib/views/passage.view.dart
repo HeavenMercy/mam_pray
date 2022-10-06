@@ -223,7 +223,7 @@ class _PassageViewState extends State<PassageView> {
   }
 
   Widget buildFooter(BuildContext context, Passage passage) {
-    var model = context.read<AppModel>();
+    var model = Provider.of<AppModel>(context, listen: false);
 
     if (enableEdition) {
       return Row(
@@ -236,10 +236,10 @@ class _PassageViewState extends State<PassageView> {
                 return setEdition(false);
               }
 
-              Utils.showSnackBar(
+              Utils.showAlert(
                 context,
                 msg: 'You will cancel the creation of passage',
-                action: SnackBarAction(
+                action: AlertAction(
                   label: 'CONFIRM',
                   onPressed: () => Navigator.of(context).pop(),
                 ),
@@ -254,10 +254,10 @@ class _PassageViewState extends State<PassageView> {
             margin: const EdgeInsets.all(5),
             onPressed: () {
               if (editedPassage!.text.isNotEmpty) {
-                Utils.showSnackBar(
+                Utils.showAlert(
                   context,
                   msg: 'You will replace the current text',
-                  action: SnackBarAction(
+                  action: AlertAction(
                     label: 'CONFIRM',
                     onPressed: () => autoFillTextField(),
                   ),
@@ -276,19 +276,19 @@ class _PassageViewState extends State<PassageView> {
             margin: const EdgeInsets.all(5),
             onPressed: () {
               if (editedPassage!.book.isEmpty) {
-                Utils.showSnackBar(
+                Utils.showAlert(
                   context,
                   msg: 'You must set the Book',
-                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                  action: AlertAction(label: 'OK', onPressed: () {}),
                 );
                 return;
               }
 
               if (editedPassage!.verseStart > editedPassage!.verseEnd) {
-                Utils.showSnackBar(
+                Utils.showAlert(
                   context,
                   msg: 'starting verse is greater than ending verse',
-                  action: SnackBarAction(label: 'OK', onPressed: () {}),
+                  action: AlertAction(label: 'OK', onPressed: () {}),
                 );
                 return;
               }
@@ -310,10 +310,10 @@ class _PassageViewState extends State<PassageView> {
         children: [
           CustomButton(
             margin: const EdgeInsets.all(5),
-            onPressed: () => Utils.showSnackBar(
+            onPressed: () => Utils.showAlert(
               context,
               msg: 'You will delete the passage',
-              action: SnackBarAction(
+              action: AlertAction(
                 label: 'CONFIRM',
                 onPressed: () {
                   model.deletePassage(passage.id);
@@ -358,7 +358,7 @@ class _PassageViewState extends State<PassageView> {
   }
 
   Widget buildCategoriesView(BuildContext context, Passage passage) {
-    var model = context.read<AppModel>();
+    var model = Provider.of<AppModel>(context, listen: false);
 
     var remaining = passage.categories.length;
     var leftToShow = max(
@@ -378,10 +378,10 @@ class _PassageViewState extends State<PassageView> {
       var canShow = ((leftToShow > 0) || (remaining == 1));
       badges.add(Badge(
         onDelete: ((enableEdition && canShow && (categories.length > 1))
-            ? () => Utils.showSnackBar(
+            ? () => Utils.showAlert(
                   context,
                   msg: 'You will remove the passage from the category',
-                  action: SnackBarAction(
+                  action: AlertAction(
                     label: 'CONFIRM',
                     onPressed: () => setState(() => categories.remove(id)),
                   ),

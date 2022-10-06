@@ -38,7 +38,7 @@ class _CategoriesViewState extends State<CategoriesView> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.watch<AppModel>();
+    var model = Provider.of<AppModel>(context);
     var result = model.findCategories(categoryFiltar);
     result.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
@@ -146,9 +146,9 @@ class _CategoriesViewState extends State<CategoriesView> {
                 CustomButton(
                   onPressed: () {
                     if (selectedCategories.isEmpty) {
-                      Utils.showSnackBar(context,
+                      Utils.showAlert(context,
                           msg: 'You must select at least one category',
-                          action: SnackBarAction(
+                          action: AlertAction(
                             label: 'OK',
                             onPressed: () {},
                           ));

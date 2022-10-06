@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mam_pray/config/styles.config.dart';
 
-typedef OnBadgeDeleteFunction = void Function();
-
 class Badge extends StatelessWidget {
   const Badge({
     Key? key,
@@ -17,7 +15,7 @@ class Badge extends StatelessWidget {
   final bool iconAfter;
   final String text;
   final Color color;
-  final OnBadgeDeleteFunction? onDelete;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {

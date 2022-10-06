@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    var model = context.watch<AppModel>();
+    var model = Provider.of<AppModel>(context);
 
     var topPassages = model.getTopPassages();
     var passages = model.getPassages().where((passage) =>
@@ -179,6 +179,7 @@ class _HomeViewState extends State<HomeView> {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => PassageView(passage: passage),
     ));
-    context.read<AppModel>().viewPassage(passage);
+
+    Provider.of<AppModel>(context, listen: false).viewPassage(passage);
   }
 }
